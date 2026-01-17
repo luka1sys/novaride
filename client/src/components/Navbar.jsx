@@ -7,12 +7,13 @@ const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-    // ნავიგაციის ლინკების ცენტრალიზებული მასივი
+    // ნავიგაციის ლინკების განახლებული მასივი
     const navLinks = [
         { name: 'Home', path: '/' },
         { name: 'Cars', path: '/carspage' },
         { name: 'About', path: '/about' },
-        { name: 'Services', path: '/service' }, // აქ არის თქვენი ზუსტი Path
+        { name: 'Services', path: '/service' },
+        { name: 'Contact', path: '/contactus' }, // დაემატა Contact Us
     ];
 
     useEffect(() => {
@@ -75,9 +76,11 @@ const Navbar = () => {
                                 {user ? (user.role === 'admin' ? 'Admin Panel' : 'Dashboard') : 'Sign In'}
                             </Link>
 
-                            <button className="bg-amber-500 hover:bg-amber-400 text-black px-7 py-3 rounded-full text-sm font-bold transition-all shadow-lg shadow-amber-500/20">
-                                <Link to='/carspage'>Book Now</Link>
-                            </button>
+                            <Link to='/carspage'>
+                                <button className="bg-amber-500 hover:bg-amber-400 text-black px-7 py-3 rounded-full text-sm font-bold transition-all shadow-lg shadow-amber-500/20">
+                                    Book Now
+                                </button>
+                            </Link>
                         </div>
                     </nav>
 
