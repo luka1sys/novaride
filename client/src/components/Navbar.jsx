@@ -3,9 +3,17 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 
 const Navbar = () => {
-    const { user } = useAuth(); // ვვარაუდობთ, რომ user ობიექტში არის role (მაგ: user.role === 'admin')
+    const { user } = useAuth();
     const [isScrolled, setIsScrolled] = useState(false);
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
+    // ნავიგაციის ლინკების ცენტრალიზებული მასივი
+    const navLinks = [
+        { name: 'Home', path: '/' },
+        { name: 'Cars', path: '/carspage' },
+        { name: 'About', path: '/about' },
+        { name: 'Services', path: '/service' }, // აქ არის თქვენი ზუსტი Path
+    ];
 
     useEffect(() => {
         const handleScroll = () => setIsScrolled(window.scrollY > 20);
@@ -18,7 +26,6 @@ const Navbar = () => {
         else document.body.style.overflow = 'unset';
     }, [isMobileMenuOpen]);
 
-    // დინამიური ლინკი პანელისთვის
     const getDashboardLink = () => {
         if (!user) return "/authentication";
         return user.role === 'admin' ? "/admin" : "/panel";
@@ -26,10 +33,11 @@ const Navbar = () => {
 
     return (
         <>
-            <header className={`fixed top-0 left-0 right-0 z-[50] transition-all duration-500 ${isScrolled
+            <header className={`fixed top-0 left-0 right-0 z-[50] transition-all duration-500 ${
+                isScrolled
                     ? "bg-black/90 backdrop-blur-xl py-3 border-b border-white/5"
                     : "bg-transparent py-5 md:py-7"
-                }`}>
+            }`}>
                 <div className="max-w-[1800px] mx-auto px-5 md:px-12 flex justify-between items-center">
 
                     {/* Logo */}
@@ -45,18 +53,13 @@ const Navbar = () => {
                     {/* Desktop Nav */}
                     <nav className="hidden lg:flex items-center gap-10">
                         <ul className="flex items-center gap-8">
-                            {['Home', 'Cars', 'About', 'Services'].map((item) => (
-                                <li key={item}>
+                            {navLinks.map((link) => (
+                                <li key={link.name}>
                                     <Link
-                                        to={
-                                            item === 'Home' ? '/' :
-                                                item === 'Cars' ? '/carspage' :
-                                                    item === 'Services' ? '/service' : // აქ მიუთითეთ თქვენი ფაილის ზუსტი Path
-                                                        `/${item.toLowerCase()}`
-                                        }
+                                        to={link.path}
                                         className="text-[15px] font-medium text-white/80 hover:text-amber-500 transition-colors"
                                     >
-                                        {item}
+                                        {link.name}
                                     </Link>
                                 </li>
                             ))}
@@ -73,8 +76,7 @@ const Navbar = () => {
                             </Link>
 
                             <button className="bg-amber-500 hover:bg-amber-400 text-black px-7 py-3 rounded-full text-sm font-bold transition-all shadow-lg shadow-amber-500/20">
-                            <Link to='/cars' >Book Now</Link>
-                                
+                                <Link to='/carspage'>Book Now</Link>
                             </button>
                         </div>
                     </nav>
@@ -94,24 +96,26 @@ const Navbar = () => {
             </header>
 
             {/* Mobile Menu */}
-            <div className={`fixed inset-0 z-[105] lg:hidden transition-all duration-500 ${isMobileMenuOpen ? "visible" : "invisible pointer-events-none"
-                }`}>
+            <div className={`fixed inset-0 z-[105] lg:hidden transition-all duration-500 ${
+                isMobileMenuOpen ? "visible" : "invisible pointer-events-none"
+            }`}>
                 <div
                     className={`absolute inset-0 bg-black/70 backdrop-blur-md transition-opacity duration-500 ${isMobileMenuOpen ? "opacity-100" : "opacity-0"}`}
                     onClick={() => setIsMobileMenuOpen(false)}
                 ></div>
 
-                <div className={`absolute top-0 right-0 w-[75%] h-full bg-[#0a0a0a] p-10 pt-32 flex flex-col transition-transform duration-500 ${isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
-                    }`}>
+                <div className={`absolute top-0 right-0 w-[75%] h-full bg-[#0a0a0a] p-10 pt-32 flex flex-col transition-transform duration-500 ${
+                    isMobileMenuOpen ? "translate-x-0" : "translate-x-full"
+                }`}>
                     <div className="flex flex-col gap-8">
-                        {['Home', 'Cars', 'About', 'Services'].map((item) => (
+                        {navLinks.map((link) => (
                             <Link
-                                key={item}
-                                to={item === 'Home' ? '/' : `/${item.toLowerCase() === 'cars' ? 'carspage' : item.toLowerCase()}`}
+                                key={link.name}
+                                to={link.path}
                                 onClick={() => setIsMobileMenuOpen(false)}
                                 className="text-2xl font-semibold text-white hover:text-amber-500"
                             >
-                                {item}
+                                {link.name}
                             </Link>
                         ))}
                     </div>
@@ -125,9 +129,13 @@ const Navbar = () => {
                         >
                             {user ? (user.role === 'admin' ? 'Admin Panel' : 'Dashboard') : 'Account Sign In'}
                         </Link>
-                        <button className="w-full bg-amber-500 text-black py-4 rounded-xl font-bold text-base shadow-lg shadow-amber-500/20">
+                        <Link 
+                            to="/carspage"
+                            onClick={() => setIsMobileMenuOpen(false)}
+                            className="w-full bg-amber-500 text-black py-4 rounded-xl font-bold text-center text-base shadow-lg shadow-amber-500/20"
+                        >
                             Book Your Ride
-                        </button>
+                        </Link>
                     </div>
                 </div>
             </div>
