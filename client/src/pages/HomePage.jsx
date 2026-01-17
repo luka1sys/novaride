@@ -39,7 +39,7 @@ const Home = () => {
 
             {/* footer */}
             <Footer />
-            <Cart />
+            
 
         </main>
     );
