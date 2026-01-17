@@ -18,7 +18,7 @@ const createSendToken = (user, statusCode, res) => {
         // cookie ს სიცოცხლის ვადა 
         maxAge: process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
         // 
-        secure: process.env.NODE_ENV === 'dev' ? false : true,
+        secure:  true,
         // javascript ბრაუზერში  ვერ წაიკითხავს cookie ს 
         httpOnly: true,
         // 

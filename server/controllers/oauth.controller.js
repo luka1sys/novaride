@@ -14,8 +14,8 @@ const createSendToken = (user, res) => {
 
     res.cookie('lt', token, {
         httpOnly: true,
-        secure: false,
-        sameSite: 'Lax',
+        secure: true,
+        sameSite: 'none',
         maxAge: 1000 * 60 * 60 * 24 * 7, // 1 კვირა
     });
 
