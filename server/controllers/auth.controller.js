@@ -22,7 +22,7 @@ const createSendToken = (user, statusCode, res) => {
         // javascript ბრაუზერში  ვერ წაიკითხავს cookie ს 
         httpOnly: true,
         // 
-        sameSite: 'lax'
+        sameSite: 'none'
     })
     // ვაბრუნებთ სტატუსის კოდს და ახალ მომხმარებელს Json ფორმატში 
     res.status(statusCode).json({
@@ -107,7 +107,7 @@ const logout = (req, res) => {
         maxAge: 0,
         httpOnly: true,
         secure: process.env.NODE_ENV === 'dev' ? false : true,
-        sameSite: 'lax',
+        sameSite: 'none',
         path: '/'
     });
 
