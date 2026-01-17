@@ -106,7 +106,7 @@ const logout = (req, res) => {
     res.cookie('lt', '', {
         maxAge: 0,
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'dev' ? false : true,
+        secure: true,
         sameSite: 'none',
         path: '/'
     });
