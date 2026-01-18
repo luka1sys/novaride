@@ -83,7 +83,6 @@ const Navbar = () => {
                             </Link>
                         </div>
                     </nav>
-
                     {/* Burger Button */}
                     <button
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -145,5 +144,4 @@ const Navbar = () => {
         </>
     );
 };
-
 export default Navbar;

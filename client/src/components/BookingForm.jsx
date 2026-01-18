@@ -1,11 +1,30 @@
 import { useState } from "react";
 import { useBooking } from "../contexts/BookingContext";
+import { useCars } from "../contexts/CarsContext";
 
 const CreateBookingForm = ({ carId }) => {
-    const { createBooking, proccedToCheckout, error } = useBooking();
+    const { createBooking, proccedToCheckout, error, booking } = useBooking();
+    const { cars } = useCars()
     const [startDate, setStartDate] = useState("");
     const [endDate, setEndDate] = useState("");
     const [loading, setLoading] = useState(false);
+
+
+    const car = cars?.find(c => c._id === carId);
+
+    let days = 0;
+    let totalPrice = 0;
+
+    if (startDate && endDate) {
+        const start = new Date(startDate);
+        const end = new Date(endDate);
+
+        days = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+
+        if (days > 0 && car) {
+            totalPrice = days * car.pricePerDay;
+        }
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -77,16 +96,34 @@ const CreateBookingForm = ({ carId }) => {
                 ></textarea>
             </div>
 
-            <div className="p-5 border border-gray-100 rounded-2xl flex justify-between items-center bg-white shadow-sm shadow-gray-100">
+            <div className="p-5 border border-white/5 rounded-2xl flex justify-between items-center bg-white/[0.03] backdrop-blur-md shadow-xl">
+                {/* მარცხენა მხარე: სტატუსი */}
                 <div className="flex items-center gap-3">
-                    <div className="w-2 h-2 bg-[#ff3131] rounded-full animate-ping"></div>
-                    <p className="text-[11px] font-bold uppercase tracking-tight italic">Instant confirmation</p>
+                    <div className="relative flex h-2 w-2">
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-500 opacity-75"></span>
+                        <span className="relative inline-flex rounded-full h-2 w-2 bg-amber-500"></span>
+                    </div>
+                    <p className="text-[10px] md:text-[11px] font-bold uppercase tracking-[0.1em] text-white/90 italic">
+                        Instant confirmation
+                    </p>
                 </div>
+
+                {/* მარჯვენა მხარე: ფასი და დღეები */}
                 <div className="text-right">
-                    <span className="text-xl font-black italic">$0.00 <span className="text-[10px] text-gray-400 not-italic uppercase tracking-tighter">Initial</span></span>
+                    <div className="text-xl font-black text-white leading-none">
+                        {days > 0 ? (
+                            `$${totalPrice.toLocaleString()}`
+                        ) : (
+                            <span className="text-amber-500/50 text-sm uppercase tracking-widest">Pending</span>
+                        )}
+                    </div>
+                    <div className="mt-1">
+                        <span className="text-[9px] text-gray-500 uppercase tracking-tighter font-bold">
+                            {days > 0 ? `${days} days total` : "Please select dates"}
+                        </span>
+                    </div>
                 </div>
             </div>
-
             <button
                 type="submit"
                 disabled={loading}
