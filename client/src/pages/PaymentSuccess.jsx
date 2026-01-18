@@ -13,112 +13,100 @@ const PaymentSuccessPage = () => {
 
     useEffect(() => {
         if (!bookingId) return;
+
         confirmBookingPayment(bookingId)
             .then(() => {
+                console.log("Booking confirmed");
                 fetchMyBookings();
             })
-            .catch(err => console.error("Failed to confirm", err));
+            .catch(err => console.error("Failed to confirm booking", err));
     }, [bookingId, fetchMyBookings]);
 
     return (
-        <section className="bg-[#030303] min-h-screen flex items-center justify-center py-10 px-6 relative overflow-hidden font-sans">
+        <section className="bg-[#050505] min-h-screen pt-24 pb-12 px-6 relative overflow-hidden font-sans flex flex-col items-center">
             
-            {/* დინამიური ფონის განათება (Animated Glow) */}
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full opacity-20 blur-[120px] animate-pulse" style={{ backgroundColor: accentColor }}></div>
-            <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] rounded-full opacity-10 blur-[100px]" style={{ backgroundColor: accentColor }}></div>
+            {/* Background Branding - Subtle and deep */}
+            <div className="absolute top-40 left-10 text-[12vw] font-black text-white/[0.01] select-none pointer-events-none uppercase tracking-tighter">
+                Premium
+            </div>
 
-            {/* მთავარი დახვეწილი კონტეინერი */}
-            <div className="max-w-xl w-full relative z-10">
+            {/* Main Success Card */}
+            <div className="max-w-xl w-full bg-[#0a0a0a] border border-white/5 rounded-[48px] p-10 md:p-14 relative z-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,1)] text-center">
                 
-                {/* ზედა სექცია: სურათი ნეონურ რგოლში */}
-                <div className="flex justify-center mb-10">
-                    <div className="relative p-1 rounded-full bg-gradient-to-b from-white/20 to-transparent">
-                        <div className="bg-[#080808] rounded-full p-4 relative overflow-hidden">
-                            <div className="absolute inset-0 bg-white/[0.02] animate-pulse"></div>
-                            <img 
-                                src="/success.png" 
-                                alt="Success" 
-                                className="w-24 h-24 md:w-28 md:h-28 object-contain relative z-10 drop-shadow-[0_0_15px_rgba(254,154,0,0.5)]"
-                            />
-                        </div>
-                    </div>
+                {/* Image Section with Gold Halo */}
+                <div className="mb-10 relative inline-block">
+                    <div className="absolute inset-0 bg-orange-500/10 blur-[50px] rounded-full scale-150"></div>
+                    <img 
+                        src="/success.png" 
+                        alt="Success" 
+                        className="w-28 h-28 md:w-36 md:h-36 object-contain relative z-10 mx-auto animate-float"
+                    />
                 </div>
 
-                {/* ტექსტური ბლოკი */}
-                <div className="text-center mb-10">
-                    <span 
-                        style={{ color: accentColor }} 
-                        className="text-[10px] font-bold uppercase tracking-[0.8em] block mb-4 opacity-80"
-                    >
-                        // Privilege Confirmed
-                    </span>
-                    <h1 className="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-6 italic">
-                        Elite <br />
-                        <span className="text-transparent font-light" style={{ WebkitTextStroke: "1px white", opacity: 0.8 }}>Reserved.</span>
+                {/* Typography Heading */}
+                <div className="space-y-3 mb-10">
+                    <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter leading-none italic">
+                        Ride <span style={{ color: accentColor }}>Secured</span>
                     </h1>
-                    <p className="text-gray-500 text-sm md:text-base font-light max-w-sm mx-auto leading-relaxed">
-                        Your premium vehicle is ready for departure. Experience the gold standard of NovaRide.
+                    <p className="text-gray-400 text-sm font-medium tracking-widest uppercase opacity-60">
+                        Reservation Successful
                     </p>
                 </div>
 
-                {/* Glassmorphism ბარათი ინფორმაციით */}
-                <div className="bg-white/[0.03] border border-white/10 backdrop-blur-xl rounded-[30px] p-1 shadow-2xl mb-10">
-                    <div className="bg-[#0a0a0a]/80 rounded-[28px] p-6 flex items-center justify-between">
-                        <div className="text-left">
-                            <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest mb-1">Receipt ID</p>
-                            <p className="text-lg font-black text-white font-mono">#{bookingId?.slice(-8).toUpperCase() || "NV-777X"}</p>
-                        </div>
-                        <div className="h-10 w-[1px] bg-white/10"></div>
-                        <div className="text-right flex items-center gap-3">
-                            <div>
-                                <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest mb-1">Security</p>
-                                <p className="text-sm font-black text-white uppercase italic tracking-tighter">Verified</p>
-                            </div>
-                            <div className="w-2 h-2 rounded-full shadow-[0_0_10px_#22c55e]" style={{ backgroundColor: "#22c55e" }}></div>
+                {/* Minimalist Data Strip */}
+                <div className="grid grid-cols-2 gap-4 mb-12">
+                    <div className="bg-white/[0.02] border border-white/5 rounded-3xl py-5 px-4 text-left">
+                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Booking ID</span>
+                        <span className="text-sm font-black text-white tracking-tight">
+                            #{bookingId?.slice(-8).toUpperCase() || "NV-A92-GOLD"}
+                        </span>
+                    </div>
+                    <div className="bg-white/[0.02] border border-white/5 rounded-3xl py-5 px-4 text-left">
+                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Status</span>
+                        <div className="flex items-center gap-2">
+                            <span className="text-sm font-black text-white uppercase italic">Active</span>
+                            <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></div>
                         </div>
                     </div>
                 </div>
 
-                {/* ღილაკები - Luxury Style */}
+                {/* Call to Action Buttons */}
                 <div className="flex flex-col gap-4">
                     <button
                         onClick={() => navigate("/panel")}
-                        className="group relative w-full overflow-hidden rounded-2xl p-[1.5px] transition-all hover:scale-[1.02] active:scale-95"
+                        style={{ backgroundColor: accentColor }}
+                        className="w-full py-5 text-black font-black uppercase tracking-[0.2em] text-[11px] rounded-2xl hover:scale-[1.02] transition-all active:scale-95 shadow-2xl shadow-orange-500/20"
                     >
-                        <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-yellow-500 to-orange-600 animate-gradient-x"></div>
-                        <div className="relative flex items-center justify-center gap-3 bg-black rounded-2xl py-5 transition-all group-hover:bg-transparent">
-                            <span className="text-white font-black uppercase tracking-[0.3em] text-[11px] group-hover:text-black transition-colors">
-                                Access My Panel
-                            </span>
-                            <svg className="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                            </svg>
-                        </div>
+                        Enter Dashboard
                     </button>
-
                     <button
                         onClick={() => navigate("/")}
-                        className="w-full py-5 border border-white/5 rounded-2xl text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px] hover:bg-white/5 hover:text-white transition-all"
+                        className="w-full py-5 border border-white/10 text-gray-300 font-black uppercase tracking-[0.2em] text-[11px] rounded-2xl hover:bg-white hover:text-black transition-all"
                     >
-                        Back to Fleet
+                        Return to Fleet
                     </button>
                 </div>
 
-                <p className="text-center mt-10 text-[8px] text-gray-700 font-bold uppercase tracking-[0.5em]">
-                    Powered by NovaRide Security Architecture
-                </p>
+                {/* Footer Disclaimer */}
+                <div className="mt-12 pt-8 border-t border-white/5">
+                    <p className="text-gray-600 text-[9px] font-bold uppercase tracking-[0.3em] leading-loose">
+                        Your digital key and arrival instructions <br />
+                        have been dispatched to your email.
+                    </p>
+                </div>
             </div>
 
-            {/* Custom Animations */}
+            {/* Subtle Abstract Background Elements */}
+            <div className="absolute top-[20%] right-[-5%] w-96 h-96 bg-orange-500/5 rounded-full blur-[100px] pointer-events-none"></div>
+            <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-white/[0.01] rounded-full blur-[120px] pointer-events-none"></div>
+
             <style jsx>{`
-                @keyframes gradient-x {
-                    0% { background-position: 0% 50%; }
-                    50% { background-position: 100% 50%; }
-                    100% { background-position: 0% 50%; }
+                .animate-float {
+                    animation: float 4s ease-in-out infinite;
                 }
-                .animate-gradient-x {
-                    background-size: 200% 200%;
-                    animation: gradient-x 3s ease infinite;
+                @keyframes float {
+                    0%, 100% { transform: translateY(0); }
+                    50% { transform: translateY(-15px); }
                 }
             `}</style>
         </section>
