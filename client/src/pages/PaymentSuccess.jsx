@@ -2,49 +2,72 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { confirmBookingPayment } from "../services/paymentService";
 import { useBooking } from "../contexts/BookingContext";
+import { motion } from "framer-motion"; // ანიმაციებისთვის
 
 const PaymentSuccessPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const bookingId = searchParams.get("bookingId");
     const { fetchMyBookings } = useBooking();
+    const accentColor = "rgb(254, 154, 0)"; // შენი მთავარი ნარინჯისფერი
 
     useEffect(() => {
         if (!bookingId) return;
 
         confirmBookingPayment(bookingId)
             .then(() => {
-                console.log("Booking confirmed")
+                console.log("Booking confirmed");
                 fetchMyBookings();
-
-            }
-            )
+            })
             .catch(err => console.error("Failed to confirm booking", err));
     }, [bookingId, fetchMyBookings]);
 
     return (
-        <div className="min-h-screen bg-white flex items-center justify-center p-6 font-sans">
-            <div className="max-w-xl w-full text-center">
+        <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 overflow-hidden relative">
+            
+            {/* Background Decor */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[rgb(254,154,0)]/5 blur-[120px] rounded-full z-0"></div>
 
+            <motion.div 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ duration: 0.5 }}
+                className="max-w-xl w-full text-center z-10"
+            >
+                {/* Success Icon Animation */}
+                <motion.div 
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ type: "spring", stiffness: 200, delay: 0.2 }}
+                    className="w-24 h-24 bg-[rgb(254,154,0)] rounded-full flex items-center justify-center mx-auto mb-8 shadow-[0_0_50px_rgba(254,154,0,0.3)]"
+                >
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                </motion.div>
 
                 {/* ტექსტური ნაწილი */}
                 <div className="mb-8">
-                    <h1 className="text-4xl md:text-5xl font-black italic tracking-tighter uppercase mb-4">
-                        Payment <span className="text-[#ff3131]">Successful</span>
+                    <h1 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-4 text-white">
+                        Payment <span style={{ color: accentColor }}>Successful</span>
                     </h1>
-                    <p className="text-gray-400 font-bold uppercase tracking-[0.2em] text-[10px]">
-                        Your ride is ready for the road
+                    <p className="text-gray-500 font-bold uppercase tracking-[0.4em] text-[10px]">
+                        Your elite ride is ready for the road
                     </p>
                 </div>
 
-                {/* ინფო ბარათი */}
-                <div className="bg-gray-50 border border-gray-100 rounded-3xl p-8 mb-10">
-                    <div className="flex justify-between items-center mb-4 border-b border-gray-200 pb-4">
-                        <span className="text-xs font-bold uppercase text-gray-400 tracking-widest">Order Status</span>
-                        <span className="text-xs font-black uppercase text-green-500 bg-green-50 px-3 py-1 rounded-full">Confirmed</span>
+                {/* ინფო ბარათი (Glassmorphism) */}
+                <div className="bg-white/[0.03] border border-white/10 backdrop-blur-md rounded-[32px] p-8 mb-10 shadow-2xl">
+                    <div className="flex justify-between items-center mb-6 border-b border-white/5 pb-4">
+                        <span className="text-[10px] font-bold uppercase text-gray-500 tracking-widest">Order Status</span>
+                        <span style={{ color: accentColor, backgroundColor: `${accentColor}15` }} className="text-[10px] font-black uppercase px-4 py-1.5 rounded-full border border-[rgb(254,154,0)]/20">
+                            Confirmed
+                        </span>
                     </div>
-                    <p className="text-sm text-gray-600 font-semibold leading-relaxed ">
-                        Thank you for choosing <span className="font-bold text-black">NovaRide</span>. A confirmation email with your booking details and digital key has been sent to your inbox.
+                    <p className="text-sm text-gray-400 font-medium leading-relaxed">
+                        Thank you for choosing <span className="text-white font-bold">NovaRide</span>. 
+                        A confirmation email with your booking details and digital key has been sent to your inbox. 
+                        Prepare for the premium experience.
                     </p>
                 </div>
 
@@ -52,37 +75,43 @@ const PaymentSuccessPage = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button
                         onClick={() => navigate("/panel")}
-                        className="py-5 bg-black text-white font-black uppercase tracking-widest text-[10px] rounded-2xl hover:bg-[#ff3131] transition-all duration-300 transform hover:-translate-y-1"
+                        style={{ backgroundColor: accentColor }}
+                        className="py-5 text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:shadow-[0_0_30px_rgba(254,154,0,0.3)] transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                     >
                         View My Bookings
                     </button>
                     <button
                         onClick={() => navigate("/")}
-                        className="py-5 border-2 border-black text-black font-black uppercase tracking-widest text-[10px] rounded-2xl hover:bg-black hover:text-white transition-all duration-300"
+                        className="py-5 border border-white/10 bg-white/5 text-white font-black uppercase tracking-widest text-[11px] rounded-2xl hover:bg-white hover:text-black transition-all duration-300"
                     >
                         Back to Fleet
                     </button>
                 </div>
 
                 {/* ქვედა დეკორაცია */}
-                <div className="mt-12 opacity-20">
-                    <p className="text-[40px] font-black italic tracking-tighter uppercase text-gray-200 select-none">
-                        NovaRide Premium
+                <motion.div 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 0.15 }}
+                    transition={{ delay: 0.6 }}
+                    className="mt-16"
+                >
+                    <p className="text-[40px] md:text-[60px] font-black italic tracking-tighter uppercase text-white select-none leading-none">
+                        NovaRide <span className="stroke-text">Premium</span>
                     </p>
-                </div>
+                </motion.div>
+            </motion.div>
 
-            </div>
+            <style jsx>{`
+                .stroke-text {
+                    color: transparent;
+                    -webkit-text-stroke: 1px rgba(255,255,255,0.4);
+                }
+            `}</style>
         </div>
     );
 };
 
 export default PaymentSuccessPage;
-
-
-
-
-
-
 
 
 
