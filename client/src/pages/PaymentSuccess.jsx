@@ -8,9 +8,9 @@ const PaymentSuccessPage = () => {
     const [searchParams] = useSearchParams();
     const bookingId = searchParams.get("bookingId");
     const { fetchMyBookings } = useBooking();
-    
-    // ოქროსფერი აქცენტი (Luxury Gold)
-    const accentColor = "rgb(212, 175, 55)"; 
+
+    // შენი მითითებული ოქროსფერი (Vibrant Gold)
+    const accentColor = "rgb(254, 154, 0)";
 
     useEffect(() => {
         if (!bookingId) return;
@@ -24,136 +24,89 @@ const PaymentSuccessPage = () => {
     }, [bookingId, fetchMyBookings]);
 
     return (
-        <section className="bg-[#050505] min-h-screen flex items-center justify-center py-20 px-6 relative overflow-hidden font-sans selection:bg-gold selection:text-black">
+        <section className="bg-[#050505] min-h-screen flex items-center justify-center py-20 px-6 relative overflow-hidden font-sans">
             
-            {/* Background Typography - ნაცრისფერი/ოქროსფერი დაბალი ოპასით */}
-            <div className="absolute top-0 left-0 text-[18vw] font-black text-white/[0.01] leading-none select-none pointer-events-none tracking-tighter uppercase">
-                SUCCESS
+            {/* დიდი ფონური წარწერები უფრო მკვეთრი დიზაინისთვის */}
+            <div className="absolute top-10 left-0 text-[15vw] font-black text-white/[0.02] leading-none select-none pointer-events-none tracking-tighter uppercase">
+                NOVARIDE
             </div>
-            <div className="absolute bottom-0 right-0 text-[18vw] font-black text-white/[0.01] leading-none select-none pointer-events-none tracking-tighter uppercase">
-                LUXURY
+            <div className="absolute bottom-10 right-0 text-[15vw] font-black text-white/[0.02] leading-none select-none pointer-events-none tracking-tighter uppercase">
+                PREMIUM
             </div>
 
-            <div className="max-w-5xl w-full relative z-10">
-                <div className="grid lg:grid-cols-2 gap-16 items-center">
-                    
-                    {/* მარცხენა მხარე: ინფორმაცია */}
-                    <div className="text-left">
-                        <div className="mb-10">
-                            <span style={{ color: accentColor }} className="font-bold tracking-[0.4em] uppercase text-[10px] mb-4 block">
-                                // Excellence Delivered
-                            </span>
-                            <h2 className="text-6xl md:text-8xl font-black text-white leading-[0.85] uppercase tracking-tighter mb-8">
-                                Ride <br />
-                                <span className="text-transparent" style={{ WebkitTextStroke: `1px ${accentColor}` }}>Secured.</span>
-                            </h2>
-                            <p className="text-gray-500 text-lg leading-relaxed max-w-md font-light">
-                                Your reservation has been finalized. Experience the pinnacle of road travel with <span className="text-white font-medium">NovaRide Premium</span>.
-                            </p>
-                        </div>
-
-                        {/* ინფო ბარათი - Luxury Style */}
-                        <div className="bg-gradient-to-br from-white/[0.05] to-transparent border border-white/10 backdrop-blur-2xl p-8 rounded-3xl mb-10 relative group overflow-hidden shadow-2xl">
-                            {/* ოქროსფერი ხაზი */}
-                            <div className="absolute top-0 left-0 w-1.5 h-full" style={{ backgroundColor: accentColor }}></div>
-                            
-                            <div className="flex justify-between items-start mb-8 border-b border-white/5 pb-5">
-                                <div>
-                                    <p className="text-[9px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2">Booking Reference</p>
-                                    <p className="text-2xl font-black text-white uppercase tracking-tighter italic">#{bookingId?.slice(-8) || "NOVA-GOLD-2026"}</p>
-                                </div>
-                                <span 
-                                    style={{ color: accentColor, borderColor: `${accentColor}33`, backgroundColor: `${accentColor}11` }}
-                                    className="text-[10px] font-black uppercase px-4 py-1.5 rounded-full border"
-                                >
-                                    Confirmed
-                                </span>
-                            </div>
-
-                            <div className="flex items-start gap-4">
-                                <div className="mt-1">
-                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }}></div>
-                                </div>
-                                <p className="text-sm text-gray-400 font-medium leading-relaxed">
-                                    Your encrypted <span className="text-white font-bold italic underline underline-offset-4">Digital Key</span> and arrival instructions have been sent to your registered email.
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* ღილაკები */}
-                        <div className="flex flex-col sm:flex-row gap-5">
-                            <button
-                                onClick={() => navigate("/panel")}
-                                style={{ backgroundColor: accentColor }}
-                                className="px-10 py-6 text-black font-black uppercase tracking-widest text-[11px] rounded-xl hover:scale-105 transition-all duration-500 flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)]"
-                            >
-                                Access Dashboard
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
-                                    <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
-                                </svg>
-                            </button>
-                            <button
-                                onClick={() => navigate("/")}
-                                className="px-10 py-6 border border-white/20 text-white font-black uppercase tracking-widest text-[11px] rounded-xl hover:bg-white hover:text-black transition-all duration-500"
-                            >
-                                Return to Fleet
-                            </button>
-                        </div>
+            <div className="max-w-4xl w-full relative z-10 text-center">
+                
+                {/* ცენტრალური Success აიკონი და ანიმაცია */}
+                <div className="mb-12 relative inline-block">
+                    <div className="absolute inset-0 rounded-full blur-3xl opacity-20 animate-pulse" style={{ backgroundColor: accentColor }}></div>
+                    <div className="relative w-32 h-32 md:w-40 md:h-40 border-2 rounded-full flex items-center justify-center mx-auto transition-transform duration-700 hover:scale-110" style={{ borderColor: accentColor }}>
+                        <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="2.5" className="drop-shadow-2xl">
+                            <path d="M20 6L9 17l-5-5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                     </div>
-
-                    {/* მარჯვენა მხარე: ოქროსფერი ვიზუალი */}
-                    <div className="relative hidden lg:block">
-                        <div className="aspect-square bg-[#0a0a0a] border border-white/5 rounded-[60px] flex items-center justify-center p-16 relative overflow-hidden group shadow-[0_0_100px_rgba(0,0,0,1)]">
-                            
-                            {/* ოქროსფერი მბრუნავი აურა */}
-                            <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-1000">
-                                <div className="absolute inset-0 animate-spin-slow" style={{ background: `conic-gradient(from 0deg, transparent, ${accentColor}, transparent)` }}></div>
-                            </div>
-
-                            <div className="relative z-10 text-center">
-                                <div className="w-40 h-40 border border-white/5 rounded-full flex items-center justify-center mb-8 mx-auto relative">
-                                    {/* ორმაგი წრე */}
-                                    <div className="absolute inset-0 border border-gold/20 rounded-full animate-ping"></div>
-                                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="1">
-                                        <path d="M9 11l3 3L22 4" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </div>
-                                <h3 className="text-white font-black italic text-5xl uppercase tracking-tighter mb-2">Elite</h3>
-                                <div className="h-px w-12 bg-gray-700 mx-auto mb-4"></div>
-                                <p className="text-gray-500 text-[9px] font-bold uppercase tracking-[0.5em]">Verified Nova Member</p>
-                            </div>
-
-                            {/* Floating "Confirmed" Badge */}
-                            <div className="absolute top-10 right-10 p-5 bg-black/80 backdrop-blur-2xl border border-white/10 rounded-2xl rotate-6 group-hover:rotate-0 transition-transform duration-700">
-                                <div className="flex flex-col items-center gap-1">
-                                    <span style={{ color: accentColor }} className="text-[14px] font-black tracking-tighter italic uppercase">Payment</span>
-                                    <span className="text-white text-[10px] font-bold uppercase tracking-widest">Verified</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
+
+                {/* მთავარი ტექსტი */}
+                <div className="mb-12">
+                    <h1 className="text-5xl md:text-7xl font-black text-white uppercase tracking-tighter mb-4 italic">
+                        Booking <span style={{ color: accentColor }}>Successful</span>
+                    </h1>
+                    <div className="h-1 w-24 mx-auto mb-6" style={{ backgroundColor: accentColor }}></div>
+                    <p className="text-gray-400 text-lg md:text-xl font-light max-w-2xl mx-auto">
+                        Your transaction has been processed securely. Your high-end journey with NovaRide starts now.
+                    </p>
+                </div>
+
+                {/* ინფორმაციის სექცია - უფრო სუფთა და მკაფიო */}
+                <div className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
+                    <div className="bg-white/[0.03] border border-white/10 p-6 rounded-2xl backdrop-blur-sm">
+                        <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-2 text-left">Reference Number</p>
+                        <p className="text-xl font-black text-white text-left italic">#{bookingId?.slice(-8).toUpperCase() || "NR-777-GOLD"}</p>
+                    </div>
+                    <div className="bg-white/[0.03] border border-white/10 p-6 rounded-2xl backdrop-blur-sm flex items-center justify-between">
+                        <div className="text-left">
+                            <p className="text-[10px] font-bold text-gray-500 uppercase tracking-widest mb-1">Order Status</p>
+                            <p className="text-lg font-black text-white uppercase italic">Confirmed</p>
+                        </div>
+                        <div className="w-10 h-10 rounded-full flex items-center justify-center bg-green-500/10 border border-green-500/20">
+                            <div className="w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* მოქმედების ღილაკები */}
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+                    <button
+                        onClick={() => navigate("/panel")}
+                        style={{ backgroundColor: accentColor }}
+                        className="w-full sm:w-auto px-12 py-5 text-black font-black uppercase tracking-[0.2em] text-[12px] rounded-full hover:shadow-[0_0_40px_rgba(254,154,0,0.4)] transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
+                    >
+                        Go to My Dashboard
+                    </button>
+                    <button
+                        onClick={() => navigate("/")}
+                        className="w-full sm:w-auto px-12 py-5 border-2 border-white/10 text-white font-black uppercase tracking-[0.2em] text-[12px] rounded-full hover:bg-white hover:text-black transition-all duration-300"
+                    >
+                        Back to Fleet
+                    </button>
+                </div>
+
+                {/* დამხმარე მესიჯი */}
+                <p className="mt-12 text-gray-600 text-[10px] font-bold uppercase tracking-[0.3em]">
+                    A digital access key has been sent to your email address.
+                </p>
+
             </div>
 
-            <style jsx>{`
-                .animate-spin-slow {
-                    animation: spin 10s linear infinite;
-                }
-                @keyframes spin {
-                    from { transform: rotate(0deg); }
-                    to { transform: rotate(360deg); }
-                }
-            `}</style>
+            {/* დეკორატიული ელემენტები კუთხეებში */}
+            <div className="absolute top-0 right-0 w-64 h-64 bg-white/[0.01] rounded-full -mr-32 -mt-32"></div>
+            <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/[0.01] rounded-full -ml-48 -mb-48"></div>
+
         </section>
     );
 };
 
 export default PaymentSuccessPage;
-
-
-
 
 
 
