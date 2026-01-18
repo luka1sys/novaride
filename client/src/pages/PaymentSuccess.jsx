@@ -19,72 +19,79 @@ const PaymentSuccessPage = () => {
     }, [bookingId, fetchMyBookings]);
 
     return (
-        <div className="min-h-screen bg-[#050505] flex items-center justify-center p-6 font-sans">
+        <div className="min-h-screen bg-[#050505] flex items-center justify-center p-8 relative overflow-hidden">
             
+            {/* დახვეწილი ფონის ელემენტი - მხოლოდ ერთი რბილი ნათება */}
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none"></div>
+
             <motion.div 
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="max-w-md w-full text-center"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, ease: "easeOut" }}
+                className="max-w-md w-full"
             >
-                {/* Success Checkmark - მინიმალისტური */}
-                <div className="mb-8 flex justify-center">
-                    <div className="w-16 h-16 bg-emerald-500/10 rounded-full flex items-center justify-center">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#10b981" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                            <polyline points="20 6 9 17 4 12"></polyline>
-                        </svg>
-                    </div>
-                </div>
-
-                {/* ტექსტი */}
-                <div className="mb-10">
-                    <h1 className="text-4xl font-black italic tracking-tighter uppercase mb-3 text-white">
-                        Payment <span className="text-white/40">Success</span>
-                    </h1>
-                    <div className="flex justify-center">
-                        {/* მხოლოდ აქ ვიყენებთ მწვანეს აქცენტისთვის */}
-                        <span className="flex items-center gap-1.5 text-emerald-500 text-[10px] font-black uppercase tracking-[0.2em]">
-                            <span className="w-1 h-1 bg-emerald-500 rounded-full animate-pulse"></span>
-                            Confirmed
-                        </span>
-                    </div>
-                </div>
-
-                {/* ინფორმაცია - ბორდერების გარეშე */}
-                <div className="mb-12 px-4">
-                    <p className="text-gray-400 text-sm font-medium leading-relaxed mb-6">
-                        Thank you for your trust. Your booking <span className="text-white">#{bookingId?.slice(-6).toUpperCase()}</span> is now active. Check your email for the digital key.
-                    </p>
-                    <div className="h-[1px] w-12 bg-white/10 mx-auto"></div>
-                </div>
-
-                {/* ღილაკები - კომპაქტური */}
-                <div className="space-y-3">
-                    <button
-                        onClick={() => navigate("/panel")}
-                        style={{ backgroundColor: accentColor }}
-                        className="w-full py-4 text-black font-black uppercase tracking-widest text-[10px] rounded-xl hover:opacity-90 transition-all active:scale-[0.98]"
+                {/* სტატუსის პატარა ინდიკატორი ზემოთ */}
+                <div className="flex justify-center mb-12">
+                    <motion.div 
+                        initial={{ width: 0 }}
+                        animate={{ width: "fit-content" }}
+                        className="overflow-hidden border-b border-emerald-500/30 pb-2"
                     >
-                        Go to Dashboard
-                    </button>
+                        <span className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.5em] flex items-center gap-3">
+                            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
+                            Verified & Secured
+                        </span>
+                    </motion.div>
+                </div>
+
+                {/* მთავარი სათაური - აქცენტი ტიპოგრაფიაზე */}
+                <div className="text-center mb-10">
+                    <h1 className="text-6xl font-black italic tracking-[0.05em] text-white leading-none uppercase">
+                        READY <br />
+                        <span style={{ color: accentColor }} className="not-italic">TO RIDE.</span>
+                    </h1>
+                </div>
+
+                {/* ტექსტური ბლოკი - მინიმალისტური */}
+                <div className="text-center mb-14 px-6">
+                    <p className="text-gray-500 text-[13px] font-medium leading-relaxed tracking-wide">
+                        Your luxury experience has been confirmed. 
+                        Booking <span className="text-white">#{bookingId?.slice(-6).toUpperCase()}</span> is now active in your digital garage.
+                    </p>
+                </div>
+
+                {/* ღილაკები - Modern Split Design */}
+                <div className="flex flex-col gap-4">
+                    <motion.button
+                        whileHover={{ scale: 1.02 }}
+                        whileTap={{ scale: 0.98 }}
+                        onClick={() => navigate("/panel")}
+                        className="w-full py-5 bg-white text-black font-black uppercase tracking-[0.2em] text-[11px] rounded-full shadow-2xl transition-all"
+                    >
+                        Enter Dashboard
+                    </motion.button>
+                    
                     <button
                         onClick={() => navigate("/")}
-                        className="w-full py-4 text-white/50 font-bold uppercase tracking-widest text-[10px] hover:text-white transition-all"
+                        className="w-full py-4 text-white/30 hover:text-white font-bold uppercase tracking-[0.3em] text-[9px] transition-all"
                     >
-                        Back to Home
+                        Return to Fleet
                     </button>
                 </div>
 
-                {/* პატარა დეკორი დაბლა */}
-                <p className="mt-20 text-[9px] text-white/10 font-bold uppercase tracking-[0.6em]">
-                    NovaRide Premium
-                </p>
+                {/* Footer Decor - პრემიუმ ბრენდინგისთვის */}
+                <div className="mt-24 flex flex-col items-center gap-4">
+                    <div className="w-[1px] h-12 bg-gradient-to-b from-white/20 to-transparent"></div>
+                    <p className="text-[10px] text-white/10 font-black uppercase tracking-[1em] ml-[1em]">
+                        NOVAMOTORS
+                    </p>
+                </div>
             </motion.div>
         </div>
     );
 };
 
 export default PaymentSuccessPage;
-
 
 
 
