@@ -1,89 +1,124 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import { motion } from "framer-motion"; // დააინსტალირე: npm install framer-motion
+import { CheckCircle2, Car, Calendar, ArrowRight } from "lucide-react"; // დააინსტალირე: npm install lucide-react
 import { confirmBookingPayment } from "../services/paymentService";
 import { useBooking } from "../contexts/BookingContext";
-import { motion } from "framer-motion";
 
 const PaymentSuccessPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const bookingId = searchParams.get("bookingId");
     const { fetchMyBookings } = useBooking();
-    const accentColor = "rgb(254, 154, 0)"; 
+    const [isConfirming, setIsConfirming] = useState(true);
 
     useEffect(() => {
-        if (!bookingId) return;
+        if (!bookingId) {
+            setIsConfirming(false);
+            return;
+        }
+
         confirmBookingPayment(bookingId)
-            .then(() => fetchMyBookings())
-            .catch(err => console.error("Failed to confirm booking", err));
+            .then(() => {
+                fetchMyBookings();
+                setIsConfirming(false);
+            })
+            .catch(err => {
+                console.error("Failed to confirm booking", err);
+                setIsConfirming(false);
+            });
     }, [bookingId, fetchMyBookings]);
 
+    if (isConfirming) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white">
+                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#ff3131]"></div>
+            </div>
+        );
+    }
+
     return (
-        <div className="min-h-screen bg-[#050505] flex items-center justify-center p-8 relative overflow-hidden">
+        <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-4 font-sans overflow-hidden">
+            {/* ფონური დეკორაცია */}
+            <div className="absolute top-0 left-0 w-full h-1 bg-[#ff3131]"></div>
             
-            {/* დახვეწილი ფონის ელემენტი - მხოლოდ ერთი რბილი ნათება */}
-            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-amber-500/5 blur-[120px] rounded-full pointer-events-none"></div>
-
             <motion.div 
-                initial={{ opacity: 0, y: 15 }}
+                initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
-                className="max-w-md w-full"
+                transition={{ duration: 0.5 }}
+                className="max-w-2xl w-full"
             >
-                {/* სტატუსის პატარა ინდიკატორი ზემოთ */}
-                <div className="flex justify-center mb-12">
-                    <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: "fit-content" }}
-                        className="overflow-hidden border-b border-emerald-500/30 pb-2"
-                    >
-                        <span className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.5em] flex items-center gap-3">
-                            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full"></span>
-                            Verified & Secured
-                        </span>
-                    </motion.div>
-                </div>
-
-                {/* მთავარი სათაური - აქცენტი ტიპოგრაფიაზე */}
-                <div className="text-center mb-10">
-                    <h1 className="text-6xl font-black italic tracking-[0.05em] text-white leading-none uppercase">
-                        READY <br />
-                        <span style={{ color: accentColor }} className="not-italic">TO RIDE.</span>
-                    </h1>
-                </div>
-
-                {/* ტექსტური ბლოკი - მინიმალისტური */}
-                <div className="text-center mb-14 px-6">
-                    <p className="text-gray-500 text-[13px] font-medium leading-relaxed tracking-wide">
-                        Your luxury experience has been confirmed. 
-                        Booking <span className="text-white">#{bookingId?.slice(-6).toUpperCase()}</span> is now active in your digital garage.
-                    </p>
-                </div>
-
-                {/* ღილაკები - Modern Split Design */}
-                <div className="flex flex-col gap-4">
-                    <motion.button
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
-                        onClick={() => navigate("/panel")}
-                        className="w-full py-5 bg-white text-black font-black uppercase tracking-[0.2em] text-[11px] rounded-full shadow-2xl transition-all"
-                    >
-                        Enter Dashboard
-                    </motion.button>
+                <div className="bg-white rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8 md:p-12 border border-gray-100 relative overflow-hidden">
                     
-                    <button
-                        onClick={() => navigate("/")}
-                        className="w-full py-4 text-white/30 hover:text-white font-bold uppercase tracking-[0.3em] text-[9px] transition-all"
+                    {/* წარმატების სიმბოლო */}
+                    <motion.div 
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                        className="flex justify-center mb-8"
                     >
-                        Return to Fleet
-                    </button>
+                        <div className="bg-green-50 p-4 rounded-full">
+                            <CheckCircle2 className="w-16 h-16 text-green-500" strokeWidth={1.5} />
+                        </div>
+                    </motion.div>
+
+                    <div className="text-center mb-10">
+                        <h1 className="text-5xl md:text-6xl font-black italic tracking-tighter uppercase mb-2">
+                            PAYMENT <span className="text-[#ff3131]">DONE.</span>
+                        </h1>
+                        <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px]">
+                            Your journey with NovaRide begins now
+                        </p>
+                    </div>
+
+                    {/* ბარათი დეტალებით */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                        <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 flex items-center gap-4">
+                            <div className="bg-white p-3 rounded-xl shadow-sm">
+                                <Car className="w-5 h-5 text-[#ff3131]" />
+                            </div>
+                            <div>
+                                <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Booking ID</p>
+                                <p className="text-sm font-black text-black">#{bookingId?.slice(-8) || "N/A"}</p>
+                            </div>
+                        </div>
+                        <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 flex items-center gap-4">
+                            <div className="bg-white p-3 rounded-xl shadow-sm">
+                                <Calendar className="w-5 h-5 text-[#ff3131]" />
+                            </div>
+                            <div>
+                                <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Status</p>
+                                <p className="text-sm font-black text-green-600">CONFIRMED</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p className="text-center text-gray-500 text-sm font-medium mb-10 px-4">
+                        We've sent the <span className="text-black font-bold">Digital Key</span> and rental agreement to your email. You can also access them in your dashboard.
+                    </p>
+
+                    {/* ღილაკები */}
+                    <div className="flex flex-col md:flex-row gap-4">
+                        <button
+                            onClick={() => navigate("/panel")}
+                            className="flex-1 py-5 bg-black text-white font-black uppercase tracking-widest text-[11px] rounded-2xl hover:bg-[#ff3131] transition-all duration-300 flex items-center justify-center gap-2 group"
+                        >
+                            Manage Booking
+                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        </button>
+                        <button
+                            onClick={() => navigate("/")}
+                            className="flex-1 py-5 border-2 border-black text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:bg-black hover:text-white transition-all duration-300"
+                        >
+                            Return Home
+                        </button>
+                    </div>
                 </div>
 
-                {/* Footer Decor - პრემიუმ ბრენდინგისთვის */}
-                <div className="mt-24 flex flex-col items-center gap-4">
-                    <div className="w-[1px] h-12 bg-gradient-to-b from-white/20 to-transparent"></div>
-                    <p className="text-[10px] text-white/10 font-black uppercase tracking-[1em] ml-[1em]">
-                        NOVAMOTORS
+                {/* დეკორატიული ტექსტი ფონზე */}
+                <div className="mt-8 text-center">
+                    <p className="text-[60px] font-black italic tracking-tighter uppercase text-gray-200/40 select-none leading-none">
+                        NOVARIDE
                     </p>
                 </div>
             </motion.div>
@@ -92,6 +127,13 @@ const PaymentSuccessPage = () => {
 };
 
 export default PaymentSuccessPage;
+
+
+
+
+
+
+
 
 
 
