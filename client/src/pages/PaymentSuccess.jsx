@@ -70,7 +70,7 @@ const PaymentSuccessPage = () => {
                             <button
                                 onClick={() => navigate("/panel")}
                                 style={{ backgroundColor: accentColor }}
-                                className="px-10 py-5 text-black font-semibold text-[14px] rounded-sm hover:brightness-110 transition-all active:scale-95"
+                                className="px-10 py-5 text-white font-semibold text-[14px] rounded-sm hover:brightness-110 transition-all active:scale-95"
                             >
                                 view My Bookings
                             </button>
