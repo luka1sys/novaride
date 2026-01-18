@@ -8,7 +8,9 @@ const PaymentSuccessPage = () => {
     const [searchParams] = useSearchParams();
     const bookingId = searchParams.get("bookingId");
     const { fetchMyBookings } = useBooking();
-    const accentColor = "#ff3131";
+    
+    // ოქროსფერი აქცენტი (Luxury Gold)
+    const accentColor = "rgb(212, 175, 55)"; 
 
     useEffect(() => {
         if (!bookingId) return;
@@ -22,97 +24,111 @@ const PaymentSuccessPage = () => {
     }, [bookingId, fetchMyBookings]);
 
     return (
-        <section className="bg-[#080808] min-h-screen flex items-center justify-center py-20 px-6 relative overflow-hidden font-sans">
-            {/* Background Typography - Work სექციის მსგავსი */}
-            <div className="absolute top-0 left-0 text-[18vw] font-black text-white/[0.02] leading-none select-none pointer-events-none tracking-tighter uppercase">
+        <section className="bg-[#050505] min-h-screen flex items-center justify-center py-20 px-6 relative overflow-hidden font-sans selection:bg-gold selection:text-black">
+            
+            {/* Background Typography - ნაცრისფერი/ოქროსფერი დაბალი ოპასით */}
+            <div className="absolute top-0 left-0 text-[18vw] font-black text-white/[0.01] leading-none select-none pointer-events-none tracking-tighter uppercase">
                 SUCCESS
             </div>
-            <div className="absolute bottom-0 right-0 text-[18vw] font-black text-white/[0.02] leading-none select-none pointer-events-none tracking-tighter uppercase">
-                RIDE
+            <div className="absolute bottom-0 right-0 text-[18vw] font-black text-white/[0.01] leading-none select-none pointer-events-none tracking-tighter uppercase">
+                LUXURY
             </div>
 
             <div className="max-w-5xl w-full relative z-10">
-                <div className="grid lg:grid-cols-2 gap-12 items-center">
+                <div className="grid lg:grid-cols-2 gap-16 items-center">
                     
                     {/* მარცხენა მხარე: ინფორმაცია */}
                     <div className="text-left">
-                        <div className="mb-8">
-                            <span style={{ color: accentColor }} className="font-bold tracking-[0.3em] uppercase text-xs mb-4 block">
-                                // Transaction Complete
+                        <div className="mb-10">
+                            <span style={{ color: accentColor }} className="font-bold tracking-[0.4em] uppercase text-[10px] mb-4 block">
+                                // Excellence Delivered
                             </span>
-                            <h2 className="text-5xl md:text-7xl font-black text-white leading-[0.9] uppercase tracking-tighter mb-6">
-                                Payment <br />
-                                <span className="text-transparent" style={{ WebkitTextStroke: "1px white" }}>Confirmed.</span>
+                            <h2 className="text-6xl md:text-8xl font-black text-white leading-[0.85] uppercase tracking-tighter mb-8">
+                                Ride <br />
+                                <span className="text-transparent" style={{ WebkitTextStroke: `1px ${accentColor}` }}>Secured.</span>
                             </h2>
-                            <p className="text-gray-400 text-lg leading-relaxed max-w-md italic">
-                                Your premium vehicle is now reserved. Get ready to hit the road with NovaRide.
+                            <p className="text-gray-500 text-lg leading-relaxed max-w-md font-light">
+                                Your reservation has been finalized. Experience the pinnacle of road travel with <span className="text-white font-medium">NovaRide Premium</span>.
                             </p>
                         </div>
 
-                        {/* ინფო ბარათი - Glassmorphism */}
-                        <div className="bg-white/[0.03] border border-white/10 backdrop-blur-md p-8 rounded-2xl mb-8 relative group overflow-hidden">
-                            <div className="absolute top-0 left-0 w-1 h-full" style={{ backgroundColor: accentColor }}></div>
+                        {/* ინფო ბარათი - Luxury Style */}
+                        <div className="bg-gradient-to-br from-white/[0.05] to-transparent border border-white/10 backdrop-blur-2xl p-8 rounded-3xl mb-10 relative group overflow-hidden shadow-2xl">
+                            {/* ოქროსფერი ხაზი */}
+                            <div className="absolute top-0 left-0 w-1.5 h-full" style={{ backgroundColor: accentColor }}></div>
                             
-                            <div className="flex justify-between items-start mb-6 border-b border-white/5 pb-4">
+                            <div className="flex justify-between items-start mb-8 border-b border-white/5 pb-5">
                                 <div>
-                                    <p className="text-[10px] font-mono text-gray-500 uppercase tracking-widest mb-1">Order Identifier</p>
-                                    <p className="text-xl font-black text-white uppercase tracking-tighter italic">#{bookingId?.slice(-8) || "NOVARIDE-2024"}</p>
+                                    <p className="text-[9px] font-bold text-gray-500 uppercase tracking-[0.2em] mb-2">Booking Reference</p>
+                                    <p className="text-2xl font-black text-white uppercase tracking-tighter italic">#{bookingId?.slice(-8) || "NOVA-GOLD-2026"}</p>
                                 </div>
-                                <span className="text-[10px] font-black uppercase text-green-500 bg-green-500/10 px-3 py-1 rounded-full border border-green-500/20">
-                                    Secure
+                                <span 
+                                    style={{ color: accentColor, borderColor: `${accentColor}33`, backgroundColor: `${accentColor}11` }}
+                                    className="text-[10px] font-black uppercase px-4 py-1.5 rounded-full border"
+                                >
+                                    Confirmed
                                 </span>
                             </div>
 
-                            <p className="text-sm text-gray-400 font-medium leading-relaxed">
-                                A confirmation email with your <span className="text-white font-bold italic underline decoration-[#ff3131] decoration-2">Digital Key</span> has been dispatched to your inbox.
-                            </p>
+                            <div className="flex items-start gap-4">
+                                <div className="mt-1">
+                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: accentColor }}></div>
+                                </div>
+                                <p className="text-sm text-gray-400 font-medium leading-relaxed">
+                                    Your encrypted <span className="text-white font-bold italic underline underline-offset-4">Digital Key</span> and arrival instructions have been sent to your registered email.
+                                </p>
+                            </div>
                         </div>
 
                         {/* ღილაკები */}
-                        <div className="flex flex-col sm:flex-row gap-4">
+                        <div className="flex flex-col sm:flex-row gap-5">
                             <button
                                 onClick={() => navigate("/panel")}
-                                className="px-8 py-5 bg-white text-black font-black uppercase tracking-widest text-[11px] rounded-sm hover:invert transition-all duration-300 flex items-center justify-center gap-3"
+                                style={{ backgroundColor: accentColor }}
+                                className="px-10 py-6 text-black font-black uppercase tracking-widest text-[11px] rounded-xl hover:scale-105 transition-all duration-500 flex items-center justify-center gap-3 shadow-[0_10px_30px_rgba(212,175,55,0.2)]"
                             >
-                                View My Bookings
+                                Access Dashboard
                                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3">
                                     <path d="M5 12h14M12 5l7 7-7 7" strokeLinecap="round" strokeLinejoin="round"/>
                                 </svg>
                             </button>
                             <button
                                 onClick={() => navigate("/")}
-                                className="px-8 py-5 border border-white/20 text-white font-black uppercase tracking-widest text-[11px] rounded-sm hover:bg-white hover:text-black transition-all duration-300"
+                                className="px-10 py-6 border border-white/20 text-white font-black uppercase tracking-widest text-[11px] rounded-xl hover:bg-white hover:text-black transition-all duration-500"
                             >
-                                Back to Fleet
+                                Return to Fleet
                             </button>
                         </div>
                     </div>
 
-                    {/* მარჯვენა მხარე: ვიზუალური ეფექტი */}
+                    {/* მარჯვენა მხარე: ოქროსფერი ვიზუალი */}
                     <div className="relative hidden lg:block">
-                        <div className="aspect-square bg-gradient-to-tr from-[#111] to-[#080808] border border-white/10 rounded-full flex items-center justify-center p-12 relative overflow-hidden group">
+                        <div className="aspect-square bg-[#0a0a0a] border border-white/5 rounded-[60px] flex items-center justify-center p-16 relative overflow-hidden group shadow-[0_0_100px_rgba(0,0,0,1)]">
                             
-                            {/* მბრუნავი ანიმაცია ფონზე */}
-                            <div className="absolute inset-0 opacity-20 group-hover:opacity-40 transition-opacity duration-700">
+                            {/* ოქროსფერი მბრუნავი აურა */}
+                            <div className="absolute inset-0 opacity-10 group-hover:opacity-20 transition-opacity duration-1000">
                                 <div className="absolute inset-0 animate-spin-slow" style={{ background: `conic-gradient(from 0deg, transparent, ${accentColor}, transparent)` }}></div>
                             </div>
 
                             <div className="relative z-10 text-center">
-                                <div className="w-32 h-32 border-2 border-white/10 rounded-full flex items-center justify-center mb-6 mx-auto animate-pulse">
-                                     <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="1.5">
-                                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" strokeLinecap="round" strokeLinejoin="round"/>
-                                        <path d="M22 4L12 14.01l-3-3" strokeLinecap="round" strokeLinejoin="round"/>
+                                <div className="w-40 h-40 border border-white/5 rounded-full flex items-center justify-center mb-8 mx-auto relative">
+                                    {/* ორმაგი წრე */}
+                                    <div className="absolute inset-0 border border-gold/20 rounded-full animate-ping"></div>
+                                    <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke={accentColor} strokeWidth="1">
+                                        <path d="M9 11l3 3L22 4" strokeLinecap="round" strokeLinejoin="round"/>
+                                        <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
                                 </div>
-                                <p className="text-white font-black italic text-4xl uppercase tracking-tighter">Verified</p>
-                                <p className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.4em] mt-2">NovaRide Security System</p>
+                                <h3 className="text-white font-black italic text-5xl uppercase tracking-tighter mb-2">Elite</h3>
+                                <div className="h-px w-12 bg-gray-700 mx-auto mb-4"></div>
+                                <p className="text-gray-500 text-[9px] font-bold uppercase tracking-[0.5em]">Verified Nova Member</p>
                             </div>
 
-                            {/* მცოცავი Glass ბარათი */}
-                            <div className="absolute bottom-10 right-0 p-4 bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl animate-bounce">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-ping"></div>
-                                    <span className="text-[9px] text-white font-bold uppercase tracking-widest">Active License</span>
+                            {/* Floating "Confirmed" Badge */}
+                            <div className="absolute top-10 right-10 p-5 bg-black/80 backdrop-blur-2xl border border-white/10 rounded-2xl rotate-6 group-hover:rotate-0 transition-transform duration-700">
+                                <div className="flex flex-col items-center gap-1">
+                                    <span style={{ color: accentColor }} className="text-[14px] font-black tracking-tighter italic uppercase">Payment</span>
+                                    <span className="text-white text-[10px] font-bold uppercase tracking-widest">Verified</span>
                                 </div>
                             </div>
                         </div>
@@ -123,7 +139,7 @@ const PaymentSuccessPage = () => {
 
             <style jsx>{`
                 .animate-spin-slow {
-                    animation: spin 6s linear infinite;
+                    animation: spin 10s linear infinite;
                 }
                 @keyframes spin {
                     from { transform: rotate(0deg); }
@@ -135,8 +151,6 @@ const PaymentSuccessPage = () => {
 };
 
 export default PaymentSuccessPage;
-
-
 
 
 
