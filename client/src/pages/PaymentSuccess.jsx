@@ -9,7 +9,6 @@ const PaymentSuccessPage = () => {
     const bookingId = searchParams.get("bookingId");
     const { fetchMyBookings } = useBooking();
 
-    // Using your Gold accent color
     const accentColor = "rgb(254, 154, 0)";
 
     useEffect(() => {
@@ -24,93 +23,122 @@ const PaymentSuccessPage = () => {
     }, [bookingId, fetchMyBookings]);
 
     return (
-        <div className="min-h-screen bg-white flex flex-col items-center pt-32 pb-12 px-6 font-sans relative overflow-hidden">
+        <section className="bg-[#080808] min-h-screen py-32 px-6 relative overflow-hidden font-sans flex items-center justify-center">
             
-            {/* Subtle floating background watermark */}
-            <div className="absolute top-20 right-[-5%] text-[15vw] font-black text-gray-50 select-none pointer-events-none uppercase italic tracking-tighter">
-                Elite
+            {/* Background Typography - Matching the Work component */}
+            <div className="absolute top-0 left-0 text-[18vw] font-black text-white/[0.02] leading-none select-none pointer-events-none uppercase">
+                SUCCESS
             </div>
 
-            <div className="max-w-xl w-full text-center relative z-10">
-                
-                {/* Image Section */}
-                <div className="mb-10">
-                    <img 
-                        src="/success.png" 
-                        alt="Success" 
-                        className="w-32 h-32 md:w-40 md:h-40 mx-auto object-contain drop-shadow-sm animate-fade-in"
-                    />
-                </div>
-
-                {/* Text Content */}
-                <div className="mb-10">
-                    <h1 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-4 leading-none">
-                        Payment <span style={{ color: accentColor }}>Successful</span>
-                    </h1>
-                    <div className="h-1 w-12 bg-black mx-auto mb-6"></div>
-                    <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px]">
-                        Your premium journey starts now
-                    </p>
-                </div>
-
-                {/* Info Card - Clean Minimalist */}
-                <div className="bg-[#fcfcfc] border border-gray-100 rounded-[2rem] p-8 md:p-10 mb-10 shadow-sm">
-                    <div className="flex justify-between items-center mb-6">
-                        <div className="text-left">
-                            <span className="text-[9px] font-bold uppercase text-gray-400 tracking-widest block mb-1">Booking Reference</span>
-                            <span className="text-sm font-black uppercase tracking-tight italic">
-                                #{bookingId?.slice(-8).toUpperCase() || "NR-PREMIUM"}
+            <div className="max-w-7xl mx-auto w-full relative z-10">
+                <div className="grid lg:grid-cols-12 gap-16 items-center">
+                    
+                    {/* Left Side: Content */}
+                    <div className="lg:col-span-6 text-left">
+                        <div className="mb-12">
+                            <span style={{ color: accentColor }} className="font-bold tracking-[0.3em] uppercase text-xs mb-4 block">
+                                // Transaction Completed
                             </span>
+                            <h2 className="text-5xl md:text-7xl font-black text-white leading-tight uppercase tracking-tighter mb-6">
+                                Booking <br />
+                                <span className="text-transparent" style={{ WebkitTextStroke: "1px white" }}>Confirmed.</span>
+                            </h2>
+                            <p className="text-gray-400 text-lg leading-relaxed max-w-lg">
+                                Your reservation has been secured. A confirmation email containing your digital key and trip details is being prepared for your inbox.
+                            </p>
                         </div>
-                        <div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full">
-                            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
-                            <span className="text-[10px] font-black uppercase text-green-600">Confirmed</span>
+
+                        {/* Order Details Strip */}
+                        <div className="bg-white/[0.03] border-l-2 p-8 mb-10 flex flex-col md:flex-row gap-12" style={{ borderLeftColor: accentColor }}>
+                            <div>
+                                <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-2 font-bold font-mono">Reference ID</p>
+                                <p className="text-white text-xl font-black italic uppercase tracking-tighter">
+                                    #{bookingId?.slice(-8).toUpperCase() || "NR-777-GOLD"}
+                                </p>
+                            </div>
+                            <div>
+                                <p className="text-gray-500 text-[10px] uppercase tracking-widest mb-2 font-bold font-mono">System Status</p>
+                                <div className="flex items-center gap-3">
+                                    <p className="text-white text-xl font-black italic uppercase tracking-tighter">Verified Safe</p>
+                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Action Buttons */}
+                        <div className="flex flex-col sm:flex-row gap-4">
+                            <button
+                                onClick={() => navigate("/panel")}
+                                style={{ backgroundColor: accentColor }}
+                                className="px-10 py-5 text-black font-black uppercase tracking-widest text-[11px] rounded-sm hover:brightness-110 transition-all active:scale-95"
+                            >
+                                Go to Dashboard
+                            </button>
+                            <button
+                                onClick={() => navigate("/")}
+                                className="px-10 py-5 border border-white/10 text-white font-black uppercase tracking-widest text-[11px] rounded-sm hover:bg-white hover:text-black transition-all"
+                            >
+                                Back to Fleet
+                            </button>
                         </div>
                     </div>
-                    
-                    <p className="text-sm text-gray-500 font-medium leading-relaxed text-left border-t border-gray-50 pt-6">
-                        Thank you for choosing <span className="text-black font-bold">NovaRide</span>. We have dispatched a digital key and complete booking details to your registered email address.
-                    </p>
-                </div>
 
-                {/* Action Buttons */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    <button
-                        onClick={() => navigate("/panel")}
-                        className="py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-2xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
-                    >
-                        View Dashboard
-                    </button>
-                    <button
-                        onClick={() => navigate("/")}
-                        className="py-5 border-2 border-black text-black font-black uppercase tracking-[0.2em] text-[10px] rounded-2xl hover:bg-black hover:text-white transition-all duration-300"
-                    >
-                        Back to Fleet
-                    </button>
-                </div>
+                    {/* Right Side: Visual Showcase */}
+                    <div className="lg:col-span-6 relative h-[500px] md:h-[600px] w-full mt-12 lg:mt-0">
+                        <div className="absolute inset-0 bg-[#111] border border-white/5 rounded-2xl overflow-hidden shadow-2xl group">
+                            <img 
+                                src="/success.png" 
+                                className="w-full h-full object-contain p-12 transition-all duration-1000 group-hover:scale-105"
+                                alt="Success Illustration"
+                            />
+                            
+                            {/* Floating Glass Status Element */}
+                            <div className="absolute bottom-12 left-12 p-6 bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl max-w-[240px]">
+                                <div className="flex gap-2 mb-4">
+                                    <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                                    <div className="w-2 h-2 rounded-full bg-green-500 opacity-50"></div>
+                                    <div className="w-2 h-2 rounded-full bg-green-500 opacity-20"></div>
+                                </div>
+                                <p style={{ color: accentColor }} className="text-[10px] font-mono mb-2 uppercase tracking-widest">Security Link</p>
+                                <p className="text-white text-sm font-bold leading-tight uppercase italic">
+                                    Encryption Protocol Active: Secure Confirmation
+                                </p>
+                            </div>
+                        </div>
 
-                {/* Decorative Bottom Text */}
-                <div className="mt-16">
-                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-200 italic">
-                        NovaRide Premium Mobility
-                    </p>
+                        {/* Large Background Icon Overlay (Animated) */}
+                        <div className="absolute inset-0 flex items-center justify-center pointer-events-none -z-10">
+                            <div className="w-[500px] h-[500px] border rounded-full opacity-10 animate-spin-slow" style={{ borderColor: accentColor }}></div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
             <style jsx>{`
-                @keyframes fade-in {
-                    from { opacity: 0; transform: translateY(10px); }
-                    to { opacity: 1; transform: translateY(0); }
+                .animate-spin-slow {
+                    animation: spin 15s linear infinite;
                 }
-                .animate-fade-in {
-                    animation: fade-in 0.8s ease-out forwards;
+                @keyframes spin {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
                 }
             `}</style>
-        </div>
+        </section>
     );
 };
 
 export default PaymentSuccessPage;
+
+
+
+
+
+
+
+
+
+
 
 
 
