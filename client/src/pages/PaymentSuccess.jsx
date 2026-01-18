@@ -17,77 +17,65 @@ const PaymentSuccessPage = () => {
     }, [bookingId, fetchMyBookings]);
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6 font-sans antialiased overflow-hidden relative">
-            
-            {/* ფონური დეკორატიული ელემენტი (Blur effect) */}
-            <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] bg-[#ff3131] opacity-[0.05] rounded-full blur-[120px]"></div>
-            <div className="absolute bottom-[-10%] left-[-10%] w-[300px] h-[300px] bg-white opacity-[0.03] rounded-full blur-[100px]"></div>
-
-            <div className="max-w-2xl w-full relative z-10">
-                {/* მთავარი კონტეინერი */}
-                <div className="bg-white rounded-[48px] p-8 md:p-16 shadow-[0_40px_100px_rgba(0,0,0,0.4)] text-center relative overflow-hidden">
-                    
-                    {/* წითელი ზედა ხაზი */}
-                    <div className="absolute top-0 left-0 w-full h-2 bg-[#ff3131]"></div>
-
-                    {/* ჩეკის აიკონი (Pure CSS) */}
-                    <div className="mb-10 flex justify-center">
-                        <div className="w-20 h-20 bg-black rounded-3xl rotate-12 flex items-center justify-center shadow-xl shadow-red-500/20 group hover:rotate-0 transition-transform duration-500">
-                            <div className="w-10 h-10 border-b-4 border-r-4 border-[#ff3131] rotate-45 mb-2 mr-1"></div>
+        <div className="min-h-screen bg-white flex items-center justify-center p-6 font-sans antialiased text-black">
+            <div className="max-w-md w-full">
+                
+                {/* სიმბოლური აქცენტი - მინიმალისტური "Tick" */}
+                <div className="flex justify-center mb-12">
+                    <div className="relative">
+                        <div className="w-16 h-16 border-[1px] border-gray-100 rounded-full flex items-center justify-center">
+                            <div className="w-2 h-2 bg-[#ff3131] rounded-full animate-ping absolute"></div>
+                            <div className="w-2 h-2 bg-[#ff3131] rounded-full relative"></div>
                         </div>
-                    </div>
-
-                    {/* ტექსტი */}
-                    <div className="space-y-4 mb-12">
-                        <h1 className="text-5xl md:text-7xl font-black italic tracking-tighter uppercase leading-none">
-                            DRIVE <span className="text-[#ff3131] block md:inline underline decoration-black decoration-4 underline-offset-8">LOCKED.</span>
-                        </h1>
-                        <div className="flex items-center justify-center gap-3">
-                            <span className="h-[1px] w-8 bg-gray-300"></span>
-                            <p className="text-gray-400 font-bold uppercase tracking-[0.4em] text-[10px]">
-                                Transaction Confirmed
-                            </p>
-                            <span className="h-[1px] w-8 bg-gray-300"></span>
-                        </div>
-                    </div>
-
-                    {/* საინფორმაციო ბლოკი (Modern minimalist style) */}
-                    <div className="bg-gray-50 border border-gray-100 rounded-[32px] p-6 mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
-                        <div className="text-left">
-                            <p className="text-[10px] font-black uppercase text-[#ff3131] tracking-widest mb-1">Booking Identity</p>
-                            <p className="text-xl font-mono font-bold text-black tracking-tighter">#{bookingId?.slice(-8).toUpperCase() || "N1-SUCCESS"}</p>
-                        </div>
-                        <div className="h-px md:h-12 w-full md:w-px bg-gray-200"></div>
-                        <div className="text-center md:text-right max-w-[250px]">
-                            <p className="text-[11px] text-gray-500 font-medium leading-relaxed">
-                                Confirmation and digital key sent to your <span className="text-black font-bold italic">Private Inbox</span>.
-                            </p>
-                        </div>
-                    </div>
-
-                    {/* ღილაკები */}
-                    <div className="flex flex-col sm:flex-row gap-4">
-                        <button
-                            onClick={() => navigate("/panel")}
-                            className="flex-[2] py-6 bg-black text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-[#ff3131] transition-all duration-500 shadow-lg shadow-black/10 hover:shadow-[#ff3131]/20 active:scale-95"
-                        >
-                            Access Dashboard
-                        </button>
-                        <button
-                            onClick={() => navigate("/")}
-                            className="flex-1 py-6 border-2 border-black text-black font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-black hover:text-white transition-all duration-500 active:scale-95"
-                        >
-                            Fleet
-                        </button>
                     </div>
                 </div>
 
-                {/* ქვედა ბრენდინგი */}
-                <div className="mt-10 flex flex-col items-center gap-2">
-                    <p className="text-[12px] font-black uppercase tracking-[0.8em] text-white/40">
-                        NovaRide
-                    </p>
-                    <div className="w-12 h-1 bg-[#ff3131]"></div>
+                {/* მთავარი სათაური */}
+                <div className="text-center mb-16 space-y-2">
+                    <h1 className="text-sm font-black uppercase tracking-[0.5em] text-gray-400">
+                        Confirmed
+                    </h1>
+                    <h2 className="text-4xl font-light tracking-tight">
+                        Payment <span className="font-black italic">Success</span>
+                    </h2>
+                </div>
+
+                {/* ინფო ბლოკი - ძალიან სუფთა */}
+                <div className="border-t border-b border-gray-100 py-10 mb-16">
+                    <div className="space-y-6 text-center">
+                        <p className="text-xs text-gray-400 uppercase tracking-widest font-bold">
+                            Reference: <span className="text-black ml-2">#{bookingId?.slice(-8).toUpperCase() || "N1-001"}</span>
+                        </p>
+                        <p className="text-[13px] leading-relaxed text-gray-500 max-w-[280px] mx-auto font-medium">
+                            Your vehicle is secured. Check your email for the <span className="text-black underline decoration-[#ff3131] underline-offset-4">Digital Access Key</span>.
+                        </p>
+                    </div>
+                </div>
+
+                {/* მოქმედების ღილაკები - მინიმალისტური სტილი */}
+                <div className="space-y-4">
+                    <button
+                        onClick={() => navigate("/panel")}
+                        className="w-full py-5 bg-black text-white text-[10px] font-black uppercase tracking-[0.3em] rounded-full hover:bg-[#ff3131] transition-all duration-500 transform active:scale-[0.98]"
+                    >
+                        Go to Dashboard
+                    </button>
+                    
+                    <button
+                        onClick={() => navigate("/")}
+                        className="w-full py-5 text-[10px] font-black uppercase tracking-[0.3em] text-black border border-transparent hover:border-black rounded-full transition-all duration-500"
+                    >
+                        Explore Fleet
+                    </button>
+                </div>
+
+                {/* ფუტერის დეკორაცია */}
+                <div className="mt-24 text-center">
+                    <div className="flex justify-center items-center gap-4 opacity-10">
+                         <div className="h-[1px] w-12 bg-black"></div>
+                         <span className="text-[10px] font-black uppercase tracking-[1em]">Nova</span>
+                         <div className="h-[1px] w-12 bg-black"></div>
+                    </div>
                 </div>
             </div>
         </div>
