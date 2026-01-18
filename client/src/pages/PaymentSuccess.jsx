@@ -9,6 +9,7 @@ const PaymentSuccessPage = () => {
     const bookingId = searchParams.get("bookingId");
     const { fetchMyBookings } = useBooking();
 
+    // Using your Gold accent color
     const accentColor = "rgb(254, 154, 0)";
 
     useEffect(() => {
@@ -23,97 +24,101 @@ const PaymentSuccessPage = () => {
     }, [bookingId, fetchMyBookings]);
 
     return (
-        <section className="bg-[#050505] min-h-screen pt-24 pb-12 px-6 relative overflow-hidden font-sans flex flex-col items-center">
+        <div className="min-h-screen bg-white flex flex-col items-center pt-32 pb-12 px-6 font-sans relative overflow-hidden">
             
-            {/* Background Branding - Subtle and deep */}
-            <div className="absolute top-40 left-10 text-[12vw] font-black text-white/[0.01] select-none pointer-events-none uppercase tracking-tighter">
-                Premium
+            {/* Subtle floating background watermark */}
+            <div className="absolute top-20 right-[-5%] text-[15vw] font-black text-gray-50 select-none pointer-events-none uppercase italic tracking-tighter">
+                Elite
             </div>
 
-            {/* Main Success Card */}
-            <div className="max-w-xl w-full bg-[#0a0a0a] border border-white/5 rounded-[48px] p-10 md:p-14 relative z-10 shadow-[0_50px_100px_-20px_rgba(0,0,0,1)] text-center">
+            <div className="max-w-xl w-full text-center relative z-10">
                 
-                {/* Image Section with Gold Halo */}
-                <div className="mb-10 relative inline-block">
-                    <div className="absolute inset-0 bg-orange-500/10 blur-[50px] rounded-full scale-150"></div>
+                {/* Image Section */}
+                <div className="mb-10">
                     <img 
                         src="/success.png" 
                         alt="Success" 
-                        className="w-28 h-28 md:w-36 md:h-36 object-contain relative z-10 mx-auto animate-float"
+                        className="w-32 h-32 md:w-40 md:h-40 mx-auto object-contain drop-shadow-sm animate-fade-in"
                     />
                 </div>
 
-                {/* Typography Heading */}
-                <div className="space-y-3 mb-10">
-                    <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter leading-none italic">
-                        Ride <span style={{ color: accentColor }}>Secured</span>
+                {/* Text Content */}
+                <div className="mb-10">
+                    <h1 className="text-4xl md:text-6xl font-black italic tracking-tighter uppercase mb-4 leading-none">
+                        Payment <span style={{ color: accentColor }}>Successful</span>
                     </h1>
-                    <p className="text-gray-400 text-sm font-medium tracking-widest uppercase opacity-60">
-                        Reservation Successful
+                    <div className="h-1 w-12 bg-black mx-auto mb-6"></div>
+                    <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px]">
+                        Your premium journey starts now
                     </p>
                 </div>
 
-                {/* Minimalist Data Strip */}
-                <div className="grid grid-cols-2 gap-4 mb-12">
-                    <div className="bg-white/[0.02] border border-white/5 rounded-3xl py-5 px-4 text-left">
-                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Booking ID</span>
-                        <span className="text-sm font-black text-white tracking-tight">
-                            #{bookingId?.slice(-8).toUpperCase() || "NV-A92-GOLD"}
-                        </span>
-                    </div>
-                    <div className="bg-white/[0.02] border border-white/5 rounded-3xl py-5 px-4 text-left">
-                        <span className="text-[10px] text-gray-500 font-bold uppercase tracking-widest block mb-1">Status</span>
-                        <div className="flex items-center gap-2">
-                            <span className="text-sm font-black text-white uppercase italic">Active</span>
-                            <div className="w-1.5 h-1.5 rounded-full bg-green-500 shadow-[0_0_8px_#22c55e]"></div>
+                {/* Info Card - Clean Minimalist */}
+                <div className="bg-[#fcfcfc] border border-gray-100 rounded-[2rem] p-8 md:p-10 mb-10 shadow-sm">
+                    <div className="flex justify-between items-center mb-6">
+                        <div className="text-left">
+                            <span className="text-[9px] font-bold uppercase text-gray-400 tracking-widest block mb-1">Booking Reference</span>
+                            <span className="text-sm font-black uppercase tracking-tight italic">
+                                #{bookingId?.slice(-8).toUpperCase() || "NR-PREMIUM"}
+                            </span>
+                        </div>
+                        <div className="flex items-center gap-2 bg-green-50 px-4 py-2 rounded-full">
+                            <div className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></div>
+                            <span className="text-[10px] font-black uppercase text-green-600">Confirmed</span>
                         </div>
                     </div>
+                    
+                    <p className="text-sm text-gray-500 font-medium leading-relaxed text-left border-t border-gray-50 pt-6">
+                        Thank you for choosing <span className="text-black font-bold">NovaRide</span>. We have dispatched a digital key and complete booking details to your registered email address.
+                    </p>
                 </div>
 
-                {/* Call to Action Buttons */}
-                <div className="flex flex-col gap-4">
+                {/* Action Buttons */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <button
                         onClick={() => navigate("/panel")}
-                        style={{ backgroundColor: accentColor }}
-                        className="w-full py-5 text-black font-black uppercase tracking-[0.2em] text-[11px] rounded-2xl hover:scale-[1.02] transition-all active:scale-95 shadow-2xl shadow-orange-500/20"
+                        className="py-5 bg-black text-white font-black uppercase tracking-[0.2em] text-[10px] rounded-2xl hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 active:scale-95"
                     >
-                        Enter Dashboard
+                        View Dashboard
                     </button>
                     <button
                         onClick={() => navigate("/")}
-                        className="w-full py-5 border border-white/10 text-gray-300 font-black uppercase tracking-[0.2em] text-[11px] rounded-2xl hover:bg-white hover:text-black transition-all"
+                        className="py-5 border-2 border-black text-black font-black uppercase tracking-[0.2em] text-[10px] rounded-2xl hover:bg-black hover:text-white transition-all duration-300"
                     >
-                        Return to Fleet
+                        Back to Fleet
                     </button>
                 </div>
 
-                {/* Footer Disclaimer */}
-                <div className="mt-12 pt-8 border-t border-white/5">
-                    <p className="text-gray-600 text-[9px] font-bold uppercase tracking-[0.3em] leading-loose">
-                        Your digital key and arrival instructions <br />
-                        have been dispatched to your email.
+                {/* Decorative Bottom Text */}
+                <div className="mt-16">
+                    <p className="text-[10px] font-black uppercase tracking-[0.5em] text-gray-200 italic">
+                        NovaRide Premium Mobility
                     </p>
                 </div>
             </div>
 
-            {/* Subtle Abstract Background Elements */}
-            <div className="absolute top-[20%] right-[-5%] w-96 h-96 bg-orange-500/5 rounded-full blur-[100px] pointer-events-none"></div>
-            <div className="absolute bottom-0 left-[-10%] w-[500px] h-[500px] bg-white/[0.01] rounded-full blur-[120px] pointer-events-none"></div>
-
             <style jsx>{`
-                .animate-float {
-                    animation: float 4s ease-in-out infinite;
+                @keyframes fade-in {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
                 }
-                @keyframes float {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-15px); }
+                .animate-fade-in {
+                    animation: fade-in 0.8s ease-out forwards;
                 }
             `}</style>
-        </section>
+        </div>
     );
 };
 
 export default PaymentSuccessPage;
+
+
+
+
+
+
+
+
 
 
 
