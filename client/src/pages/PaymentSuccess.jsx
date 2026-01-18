@@ -1,7 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { motion } from "framer-motion"; // დააინსტალირე: npm install framer-motion
-import { CheckCircle2, Car, Calendar, ArrowRight } from "lucide-react"; // დააინსტალირე: npm install lucide-react
 import { confirmBookingPayment } from "../services/paymentService";
 import { useBooking } from "../contexts/BookingContext";
 
@@ -10,129 +8,93 @@ const PaymentSuccessPage = () => {
     const [searchParams] = useSearchParams();
     const bookingId = searchParams.get("bookingId");
     const { fetchMyBookings } = useBooking();
-    const [isConfirming, setIsConfirming] = useState(true);
 
     useEffect(() => {
-        if (!bookingId) {
-            setIsConfirming(false);
-            return;
-        }
-
+        if (!bookingId) return;
         confirmBookingPayment(bookingId)
-            .then(() => {
-                fetchMyBookings();
-                setIsConfirming(false);
-            })
-            .catch(err => {
-                console.error("Failed to confirm booking", err);
-                setIsConfirming(false);
-            });
+            .then(() => fetchMyBookings())
+            .catch(err => console.error("Failed to confirm booking", err));
     }, [bookingId, fetchMyBookings]);
 
-    if (isConfirming) {
-        return (
-            <div className="min-h-screen flex items-center justify-center bg-white">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#ff3131]"></div>
-            </div>
-        );
-    }
-
     return (
-        <div className="min-h-screen bg-[#fafafa] flex items-center justify-center p-4 font-sans overflow-hidden">
-            {/* ფონური დეკორაცია */}
-            <div className="absolute top-0 left-0 w-full h-1 bg-[#ff3131]"></div>
+        <div className="min-h-screen bg-[#0a0a0a] flex items-center justify-center p-6 font-sans antialiased overflow-hidden relative">
+            
+            {/* ფონური დეკორატიული ელემენტი (Blur effect) */}
+            <div className="absolute top-[-10%] right-[-10%] w-[400px] h-[400px] bg-[#ff3131] opacity-[0.05] rounded-full blur-[120px]"></div>
+            <div className="absolute bottom-[-10%] left-[-10%] w-[300px] h-[300px] bg-white opacity-[0.03] rounded-full blur-[100px]"></div>
 
-            <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="max-w-2xl w-full"
-            >
-                <div className="bg-white rounded-[40px] shadow-[0_20px_50px_rgba(0,0,0,0.05)] p-8 md:p-12 border border-gray-100 relative overflow-hidden">
+            <div className="max-w-2xl w-full relative z-10">
+                {/* მთავარი კონტეინერი */}
+                <div className="bg-white rounded-[48px] p-8 md:p-16 shadow-[0_40px_100px_rgba(0,0,0,0.4)] text-center relative overflow-hidden">
+                    
+                    {/* წითელი ზედა ხაზი */}
+                    <div className="absolute top-0 left-0 w-full h-2 bg-[#ff3131]"></div>
 
-                    {/* წარმატების სიმბოლო */}
-                    <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                        className="flex justify-center mb-8"
-                    >
-                        <div className="bg-green-50 p-4 rounded-full">
-                            <CheckCircle2 className="w-16 h-16 text-green-500" strokeWidth={1.5} />
+                    {/* ჩეკის აიკონი (Pure CSS) */}
+                    <div className="mb-10 flex justify-center">
+                        <div className="w-20 h-20 bg-black rounded-3xl rotate-12 flex items-center justify-center shadow-xl shadow-red-500/20 group hover:rotate-0 transition-transform duration-500">
+                            <div className="w-10 h-10 border-b-4 border-r-4 border-[#ff3131] rotate-45 mb-2 mr-1"></div>
                         </div>
-                    </motion.div>
+                    </div>
 
-                    <div className="text-center mb-10">
-                        <h1 className="text-5xl md:text-6xl font-black italic tracking-tighter uppercase mb-2">
-                            PAYMENT <span className="text-[#ff3131]">DONE.</span>
+                    {/* ტექსტი */}
+                    <div className="space-y-4 mb-12">
+                        <h1 className="text-5xl md:text-7xl font-black italic tracking-tighter uppercase leading-none">
+                            DRIVE <span className="text-[#ff3131] block md:inline underline decoration-black decoration-4 underline-offset-8">LOCKED.</span>
                         </h1>
-                        <p className="text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px]">
-                            Your journey with NovaRide begins now
-                        </p>
-                    </div>
-
-                    {/* ბარათი დეტალებით */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
-                        <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 flex items-center gap-4">
-                            <div className="bg-white p-3 rounded-xl shadow-sm">
-                                <Car className="w-5 h-5 text-[#ff3131]" />
-                            </div>
-                            <div>
-                                <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Booking ID</p>
-                                <p className="text-sm font-black text-black">#{bookingId?.slice(-8) || "N/A"}</p>
-                            </div>
-                        </div>
-                        <div className="bg-gray-50 rounded-2xl p-5 border border-gray-100 flex items-center gap-4">
-                            <div className="bg-white p-3 rounded-xl shadow-sm">
-                                <Calendar className="w-5 h-5 text-[#ff3131]" />
-                            </div>
-                            <div>
-                                <p className="text-[10px] uppercase font-bold text-gray-400 tracking-wider">Status</p>
-                                <p className="text-sm font-black text-green-600">CONFIRMED</p>
-                            </div>
+                        <div className="flex items-center justify-center gap-3">
+                            <span className="h-[1px] w-8 bg-gray-300"></span>
+                            <p className="text-gray-400 font-bold uppercase tracking-[0.4em] text-[10px]">
+                                Transaction Confirmed
+                            </p>
+                            <span className="h-[1px] w-8 bg-gray-300"></span>
                         </div>
                     </div>
 
-                    <p className="text-center text-gray-500 text-sm font-medium mb-10 px-4">
-                        We've sent the <span className="text-black font-bold">Digital Key</span> and rental agreement to your email. You can also access them in your dashboard.
-                    </p>
+                    {/* საინფორმაციო ბლოკი (Modern minimalist style) */}
+                    <div className="bg-gray-50 border border-gray-100 rounded-[32px] p-6 mb-12 flex flex-col md:flex-row items-center justify-between gap-6">
+                        <div className="text-left">
+                            <p className="text-[10px] font-black uppercase text-[#ff3131] tracking-widest mb-1">Booking Identity</p>
+                            <p className="text-xl font-mono font-bold text-black tracking-tighter">#{bookingId?.slice(-8).toUpperCase() || "N1-SUCCESS"}</p>
+                        </div>
+                        <div className="h-px md:h-12 w-full md:w-px bg-gray-200"></div>
+                        <div className="text-center md:text-right max-w-[250px]">
+                            <p className="text-[11px] text-gray-500 font-medium leading-relaxed">
+                                Confirmation and digital key sent to your <span className="text-black font-bold italic">Private Inbox</span>.
+                            </p>
+                        </div>
+                    </div>
 
                     {/* ღილაკები */}
-                    <div className="flex flex-col md:flex-row gap-4">
+                    <div className="flex flex-col sm:flex-row gap-4">
                         <button
                             onClick={() => navigate("/panel")}
-                            className="flex-1 py-5 bg-black text-white font-black uppercase tracking-widest text-[11px] rounded-2xl hover:bg-[#ff3131] transition-all duration-300 flex items-center justify-center gap-2 group"
+                            className="flex-[2] py-6 bg-black text-white font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-[#ff3131] transition-all duration-500 shadow-lg shadow-black/10 hover:shadow-[#ff3131]/20 active:scale-95"
                         >
-                            Manage Booking
-                            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                            Access Dashboard
                         </button>
                         <button
                             onClick={() => navigate("/")}
-                            className="flex-1 py-5 border-2 border-black text-black font-black uppercase tracking-widest text-[11px] rounded-2xl hover:bg-black hover:text-white transition-all duration-300"
+                            className="flex-1 py-6 border-2 border-black text-black font-black uppercase tracking-[0.2em] text-xs rounded-2xl hover:bg-black hover:text-white transition-all duration-500 active:scale-95"
                         >
-                            Return Home
+                            Fleet
                         </button>
                     </div>
                 </div>
 
-                {/* დეკორატიული ტექსტი ფონზე */}
-                <div className="mt-8 text-center">
-                    <p className="text-[60px] font-black italic tracking-tighter uppercase text-gray-200/40 select-none leading-none">
-                        NOVARIDE
+                {/* ქვედა ბრენდინგი */}
+                <div className="mt-10 flex flex-col items-center gap-2">
+                    <p className="text-[12px] font-black uppercase tracking-[0.8em] text-white/40">
+                        NovaRide
                     </p>
+                    <div className="w-12 h-1 bg-[#ff3131]"></div>
                 </div>
-            </motion.div>
+            </div>
         </div>
     );
 };
 
 export default PaymentSuccessPage;
-
-
-
-
-
-
 
 
 
