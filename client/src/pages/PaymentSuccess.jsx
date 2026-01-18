@@ -24,7 +24,7 @@ const PaymentSuccessPage = () => {
 
     return (
         <section className="bg-[#080808] min-h-screen py-32 px-6 relative overflow-hidden font-sans flex items-center justify-center">
-            
+
             {/* Background Typography - Matching the Work component */}
             <div className="absolute top-0 left-0 text-[18vw] font-black text-white/[0.02] leading-none select-none pointer-events-none uppercase">
                 SUCCESS
@@ -32,7 +32,7 @@ const PaymentSuccessPage = () => {
 
             <div className="max-w-7xl mx-auto w-full relative z-10">
                 <div className="grid lg:grid-cols-12 gap-16 items-center">
-                    
+
                     {/* Left Side: Content */}
                     <div className="lg:col-span-6 text-left">
                         <div className="mb-12">
@@ -70,15 +70,15 @@ const PaymentSuccessPage = () => {
                             <button
                                 onClick={() => navigate("/panel")}
                                 style={{ backgroundColor: accentColor }}
-                                className="px-10 py-5 text-black font-black uppercase tracking-widest text-[11px] rounded-sm hover:brightness-110 transition-all active:scale-95"
+                                className="px-10 py-5 text-black font-semibold text-[14px] rounded-sm hover:brightness-110 transition-all active:scale-95"
                             >
-                                Go to Dashboard
+                                view My Bookings
                             </button>
                             <button
                                 onClick={() => navigate("/")}
-                                className="px-10 py-5 border border-white/10 text-white font-black uppercase tracking-widest text-[11px] rounded-sm hover:bg-white hover:text-black transition-all"
+                                className="px-10 py-5 border border-white/10 text-white font-medium text-[14px] rounded-sm hover:bg-white hover:text-black transition-all"
                             >
-                                Back to Fleet
+                                go to Home
                             </button>
                         </div>
                     </div>
@@ -86,12 +86,12 @@ const PaymentSuccessPage = () => {
                     {/* Right Side: Visual Showcase */}
                     <div className="lg:col-span-6 relative h-[500px] md:h-[600px] w-full mt-12 lg:mt-0">
                         <div className="absolute inset-0 bg-[#111] border border-white/5 rounded-2xl overflow-hidden shadow-2xl group">
-                            <img 
-                                src="/success.png" 
+                            <img
+                                src="/success.png"
                                 className="w-full h-full object-contain p-12 transition-all duration-1000 group-hover:scale-105"
                                 alt="Success Illustration"
                             />
-                            
+
                             {/* Floating Glass Status Element */}
                             <div className="absolute bottom-12 left-12 p-6 bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl max-w-[240px]">
                                 <div className="flex gap-2 mb-4">
