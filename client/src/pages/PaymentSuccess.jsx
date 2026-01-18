@@ -13,101 +13,112 @@ const PaymentSuccessPage = () => {
 
     useEffect(() => {
         if (!bookingId) return;
-
         confirmBookingPayment(bookingId)
             .then(() => {
-                console.log("Booking confirmed");
                 fetchMyBookings();
             })
-            .catch(err => console.error("Failed to confirm booking", err));
+            .catch(err => console.error("Failed to confirm", err));
     }, [bookingId, fetchMyBookings]);
 
     return (
-        <section className="bg-[#050505] min-h-screen flex items-center justify-center py-10 px-6 relative overflow-hidden font-sans">
+        <section className="bg-[#030303] min-h-screen flex items-center justify-center py-10 px-6 relative overflow-hidden font-sans">
             
-            {/* ფონური ტექსტი - უფრო მცირე ზომის */}
-            <div className="absolute top-5 left-5 text-[10vw] font-black text-white/[0.01] select-none pointer-events-none uppercase">
-                Nova
-            </div>
+            {/* დინამიური ფონის განათება (Animated Glow) */}
+            <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full opacity-20 blur-[120px] animate-pulse" style={{ backgroundColor: accentColor }}></div>
+            <div className="absolute bottom-[-10%] right-[-10%] w-[30%] h-[30%] rounded-full opacity-10 blur-[100px]" style={{ backgroundColor: accentColor }}></div>
 
-            {/* მთავარი კონტეინერი - შეზღუდული სიგანით (max-w-2xl) */}
-            <div className="max-w-2xl w-full bg-[#0a0a0a] border border-white/5 rounded-[40px] p-8 md:p-12 relative z-10 shadow-2xl text-center">
+            {/* მთავარი დახვეწილი კონტეინერი */}
+            <div className="max-w-xl w-full relative z-10">
                 
-                {/* ფოტოს სექცია - success.png */}
-                <div className="mb-8 relative inline-block">
-                    <div className="absolute inset-0 bg-orange-500/20 blur-3xl rounded-full"></div>
-                    <img 
-                        src="/success.png" 
-                        alt="Success" 
-                        className="w-32 h-32 md:w-40 md:h-40 object-contain relative z-10 mx-auto animate-bounce-slow"
-                    />
+                {/* ზედა სექცია: სურათი ნეონურ რგოლში */}
+                <div className="flex justify-center mb-10">
+                    <div className="relative p-1 rounded-full bg-gradient-to-b from-white/20 to-transparent">
+                        <div className="bg-[#080808] rounded-full p-4 relative overflow-hidden">
+                            <div className="absolute inset-0 bg-white/[0.02] animate-pulse"></div>
+                            <img 
+                                src="/success.png" 
+                                alt="Success" 
+                                className="w-24 h-24 md:w-28 md:h-28 object-contain relative z-10 drop-shadow-[0_0_15px_rgba(254,154,0,0.5)]"
+                            />
+                        </div>
+                    </div>
                 </div>
 
-                {/* სათაური და სტატუსი */}
-                <div className="mb-8">
-                    <span style={{ color: accentColor }} className="text-[10px] font-black uppercase tracking-[0.5em] block mb-2">
-                        Transaction Completed
+                {/* ტექსტური ბლოკი */}
+                <div className="text-center mb-10">
+                    <span 
+                        style={{ color: accentColor }} 
+                        className="text-[10px] font-bold uppercase tracking-[0.8em] block mb-4 opacity-80"
+                    >
+                        // Privilege Confirmed
                     </span>
-                    <h1 className="text-4xl md:text-5xl font-black text-white uppercase tracking-tighter italic">
-                        Booking <span style={{ color: accentColor }}>Confirmed</span>
+                    <h1 className="text-5xl md:text-6xl font-black text-white uppercase tracking-tighter leading-none mb-6 italic">
+                        Elite <br />
+                        <span className="text-transparent font-light" style={{ WebkitTextStroke: "1px white", opacity: 0.8 }}>Reserved.</span>
                     </h1>
+                    <p className="text-gray-500 text-sm md:text-base font-light max-w-sm mx-auto leading-relaxed">
+                        Your premium vehicle is ready for departure. Experience the gold standard of NovaRide.
+                    </p>
                 </div>
 
-                {/* ინფორმაციის ბლოკი - კომპაქტური */}
-                <div className="bg-white/[0.02] border border-white/5 rounded-2xl p-6 mb-10 flex flex-col md:flex-row items-center justify-between gap-4">
-                    <div className="text-left w-full md:w-auto">
-                        <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Reference</p>
-                        <p className="text-lg font-black text-white italic tracking-tight">
-                            #{bookingId?.slice(-8).toUpperCase() || "NR-777-GOLD"}
-                        </p>
-                    </div>
-                    
-                    <div className="h-px md:h-8 w-full md:w-px bg-white/10"></div>
-
-                    <div className="flex items-center gap-3 w-full md:w-auto justify-start md:justify-end">
-                        <div className="text-right">
-                            <p className="text-[9px] font-bold text-gray-500 uppercase tracking-widest mb-1">Status</p>
-                            <p className="text-sm font-black text-white uppercase italic">Verified Safe</p>
+                {/* Glassmorphism ბარათი ინფორმაციით */}
+                <div className="bg-white/[0.03] border border-white/10 backdrop-blur-xl rounded-[30px] p-1 shadow-2xl mb-10">
+                    <div className="bg-[#0a0a0a]/80 rounded-[28px] p-6 flex items-center justify-between">
+                        <div className="text-left">
+                            <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest mb-1">Receipt ID</p>
+                            <p className="text-lg font-black text-white font-mono">#{bookingId?.slice(-8).toUpperCase() || "NV-777X"}</p>
                         </div>
-                        <div className="w-8 h-8 rounded-full bg-green-500/10 border border-green-500/20 flex items-center justify-center">
-                            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+                        <div className="h-10 w-[1px] bg-white/10"></div>
+                        <div className="text-right flex items-center gap-3">
+                            <div>
+                                <p className="text-[8px] font-bold text-gray-500 uppercase tracking-widest mb-1">Security</p>
+                                <p className="text-sm font-black text-white uppercase italic tracking-tighter">Verified</p>
+                            </div>
+                            <div className="w-2 h-2 rounded-full shadow-[0_0_10px_#22c55e]" style={{ backgroundColor: "#22c55e" }}></div>
                         </div>
                     </div>
                 </div>
 
-                {/* ღილაკები - უფრო კომპაქტური */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                {/* ღილაკები - Luxury Style */}
+                <div className="flex flex-col gap-4">
                     <button
                         onClick={() => navigate("/panel")}
-                        style={{ backgroundColor: accentColor }}
-                        className="w-full sm:w-auto px-8 py-4 text-black font-black uppercase tracking-widest text-[11px] rounded-xl hover:brightness-110 transition-all active:scale-95 shadow-lg shadow-orange-500/20"
+                        className="group relative w-full overflow-hidden rounded-2xl p-[1.5px] transition-all hover:scale-[1.02] active:scale-95"
                     >
-                        Go to Dashboard
+                        <div className="absolute inset-0 bg-gradient-to-r from-orange-400 via-yellow-500 to-orange-600 animate-gradient-x"></div>
+                        <div className="relative flex items-center justify-center gap-3 bg-black rounded-2xl py-5 transition-all group-hover:bg-transparent">
+                            <span className="text-white font-black uppercase tracking-[0.3em] text-[11px] group-hover:text-black transition-colors">
+                                Access My Panel
+                            </span>
+                            <svg className="w-4 h-4 text-white group-hover:text-black transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </div>
                     </button>
+
                     <button
                         onClick={() => navigate("/")}
-                        className="w-full sm:w-auto px-8 py-4 border border-white/10 text-white font-black uppercase tracking-widest text-[11px] rounded-xl hover:bg-white hover:text-black transition-all"
+                        className="w-full py-5 border border-white/5 rounded-2xl text-gray-400 font-bold uppercase tracking-[0.3em] text-[10px] hover:bg-white/5 hover:text-white transition-all"
                     >
                         Back to Fleet
                     </button>
                 </div>
 
-                <p className="mt-8 text-gray-600 text-[9px] font-bold uppercase tracking-[0.2em]">
-                    Confirmation mail is on its way to your inbox
+                <p className="text-center mt-10 text-[8px] text-gray-700 font-bold uppercase tracking-[0.5em]">
+                    Powered by NovaRide Security Architecture
                 </p>
             </div>
 
-            {/* დეკორატიული "ორბიტები" */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-white/[0.02] rounded-full pointer-events-none"></div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] border border-white/[0.01] rounded-full pointer-events-none"></div>
-
+            {/* Custom Animations */}
             <style jsx>{`
-                .animate-bounce-slow {
-                    animation: bounce 3s infinite;
+                @keyframes gradient-x {
+                    0% { background-position: 0% 50%; }
+                    50% { background-position: 100% 50%; }
+                    100% { background-position: 0% 50%; }
                 }
-                @keyframes bounce {
-                    0%, 100% { transform: translateY(0); }
-                    50% { transform: translateY(-10px); }
+                .animate-gradient-x {
+                    background-size: 200% 200%;
+                    animation: gradient-x 3s ease infinite;
                 }
             `}</style>
         </section>
@@ -115,19 +126,6 @@ const PaymentSuccessPage = () => {
 };
 
 export default PaymentSuccessPage;
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
