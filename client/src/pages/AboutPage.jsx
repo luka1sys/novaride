@@ -6,7 +6,7 @@ import ExecutivePartners from "../components/ExecutivePartners";
 import Footer from "../components/Footer";
 import WatchOurVideo from "../components/WatchOurVideo";
 import About from "./About";
-import Testimonials from '../components/comment';
+import Testimonials from '../components/Testimonials';
 
 
 
