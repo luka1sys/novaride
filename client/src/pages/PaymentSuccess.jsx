@@ -2,13 +2,15 @@ import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { confirmBookingPayment } from "../services/paymentService";
 import { useBooking } from "../contexts/BookingContext";
+import { useAuth } from "../contexts/AuthContext";
 
 const PaymentSuccessPage = () => {
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
     const bookingId = searchParams.get("bookingId");
     const { fetchMyBookings } = useBooking();
-
+    const { user } = useAuth();
+    const isAdmin = user?.role === "admin"; // 2. განვსაზღვროთ არის თუ არა ადმინი
     const accentColor = "rgb(254, 154, 0)";
 
     useEffect(() => {
@@ -68,11 +70,11 @@ const PaymentSuccessPage = () => {
                         {/* Action Buttons */}
                         <div className="flex flex-col sm:flex-row gap-4">
                             <button
-                                onClick={() => navigate("/panel")}
+                                onClick={() => navigate(isAdmin ? "/adminpanel" : "/panel")} // 3. გადამისამართება როლის მიხედვით
                                 style={{ backgroundColor: accentColor }}
                                 className="px-10 py-5 text-black font-semibold text-[15px] rounded-sm hover:brightness-110 transition-all active:scale-95"
                             >
-                                view My Bookings
+                                {isAdmin ? "view my Bookings" : "view My Bookings"}
                             </button>
                             <button
                                 onClick={() => navigate("/")}
