@@ -18,7 +18,7 @@ const createSendToken = (user, statusCode, res) => {
         // cookie ს სიცოცხლის ვადა 
         maxAge: process.env.COOKIE_EXPIRES * 24 * 60 * 60 * 1000,
         // 
-        secure:  true,
+        secure: true,
         // javascript ბრაუზერში  ვერ წაიკითხავს cookie ს 
         httpOnly: true,
         // 
@@ -61,16 +61,19 @@ const signUp = catchAsync(async (req, res, next) => {
     </div>
 `;
 
-    await sendEmail(
-        email,
-        'Verify your account',
-        `Please verify your account here: ${verificationURL}`, // უბრალო ტექსტი
-        htmlMessage // HTML ვერსია
-    );
     res.status(201).json({
         status: 'success',
         message: 'User created successfully',
         user: newUser
+    });
+
+    sendEmail(
+        email,
+        'Verify your account',
+        `Please verify your account here: ${verificationURL}`,
+        htmlMessage
+    ).catch(err => {
+        console.error("Email send error:", err);
     });
 
 })
