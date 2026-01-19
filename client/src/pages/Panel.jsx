@@ -7,7 +7,8 @@ import {
     IconCar, IconCalendarStats, IconSettings,
     IconLogout, IconMenu2, IconActivity, IconMapPin, IconCrown, IconUser, IconMail, IconId
 } from "@tabler/icons-react";
-import ChangePassword from "./ChangePassword"; // დაიმპორტე შენი კომპონენტი
+import ChangePassword from "../components/ChangePasswordForm";
+
 
 const Panel = () => {
     const { logout, user } = useAuth();
@@ -190,7 +191,8 @@ const Panel = () => {
                                 </div>
 
                                 {/* მარჯვნივ შენი ფორმა */}
-                                <ChangePassword />
+                                <ChangePassword/>
+                                
                             </motion.div>
                         )}
                     </AnimatePresence>
