@@ -11,6 +11,7 @@ export const logoutUser = () => API.get('/logout')
 export const getAllUsers = () => API.get('/')
 export const updateUser = (id, data) => API.patch(`/update/${id}`, data);
 export const authoLogin = () => API.get('/me')
+export const changePassword = (data) => API.patch('/change-password', data);
 export const googleAuth = () => {
     window.location.href = `${BASEURL}/oauth/google`;
 };

@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { authoLogin, getAllUsers, loginUser, logoutUser, signupUser, updateUser } from "../services/authservice";
+import { authoLogin, changePassword, getAllUsers, loginUser, logoutUser, signupUser, updateUser } from "../services/authservice";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 const AuthContext = createContext();
@@ -131,6 +131,28 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
+
+    const changeUserPassword = async (passwordData) => {
+        const toastId = toast.loading('Changing password...');
+        try {
+            await changePassword(passwordData);
+            toast.update(toastId, {
+                render: 'Password changed successfully',
+                type: 'success',
+                isLoading: false,
+                autoClose: 2000
+            });
+        } catch (err) {
+            toast.update(toastId, {
+                render: err.response?.data?.message || "Failed to change password",
+                type: "error",
+                isLoading: false,
+                autoClose: 3000,
+            });
+            throw err;
+        }
+    };
+
     const logout = async () => {
         const toastId = toast.loading('Logging out...');
         try {
@@ -154,7 +176,7 @@ export const AuthProvider = ({ children }) => {
         }
     }
     return (
-        <AuthContext.Provider value={{ userCount: users.length, user, users, activeTab, setActiveTab, signup, login, logout, updateUserrr }}>
+        <AuthContext.Provider value={{ userCount: users.length, user, users, activeTab, setActiveTab, signup, login, logout, updateUserrr,changeUserPassword }}>
             {children}
         </AuthContext.Provider>
     )

@@ -171,8 +171,42 @@ const verifyEmail = catchAsync(async (req, res, next) => {
     });
 });
 
+const changePassword = catchAsync(async (req, res, next) => {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+        return next(new AppError("Please provide current and new password", 400));
+    }
+
+    // ვიღებთ user-ს DB-დან (რადგან password select:false ხშირად აქვთ)
+    const user = await User.findById(req.user.id).select("+password");
+
+    if (!user) {
+        return next(new AppError("User not found", 404));
+    }
+
+    // ვამოწმებთ ძველ პაროლს
+    const isCorrect = await user.comparePassword(currentPassword, user.password);
+
+    if (!isCorrect) {
+        return next(new AppError("Current password is incorrect", 401));
+    }
+
+    // ვანახლებთ პაროლს
+    user.password = newPassword;
+    await user.save(); // აქ ავტომატურად დაიჰეშება pre('save')-ით
+
+    res.status(200).json({
+        status: "success",
+        message: "Password updated successfully"
+    });
+});
+
+
+
+
 
 
 
 // ექსპორტს ვუკეთებთ ფუნქციებსს 
-module.exports = { signUp, login, logout, updateUser, verifyEmail, getAllUsers, signToken }
+module.exports = { signUp, login, logout, updateUser, verifyEmail, getAllUsers, signToken, changePassword }

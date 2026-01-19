@@ -1,5 +1,5 @@
 const express = require('express')
-const { signUp, login, logout, updateUser, verifyEmail, getAllUsers } = require('../controllers/auth.controller')
+const { signUp, login, logout, updateUser, verifyEmail, getAllUsers, changePassword } = require('../controllers/auth.controller')
 const { protect, restrictTo } = require('../middleware/auth.middleware')
 const { get } = require('mongoose')
 const authRouter = express.Router()
@@ -10,6 +10,8 @@ authRouter.get('/logout', logout)
 authRouter.get('/', protect, restrictTo('admin'), getAllUsers)
 authRouter.patch('/update/:id', protect, restrictTo('admin'), updateUser)
 authRouter.get('/verify/:token', verifyEmail)
+
+authRouter.patch('/change-password', protect, changePassword);
 
 
 authRouter.get('/me', protect, (req, res) => {
