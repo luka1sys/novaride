@@ -9,12 +9,12 @@ import {
 } from "@tabler/icons-react";
 
 const Panel = () => {
-    const { logout, user, changeUserPassword } = useAuth(); // დავამატეთ changeUserPassword
+    const { logout, user, changeUserPassword } = useAuth();
     const { myBookings } = useBooking();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("dashboard"); // ტაბების მართვა
 
-    // პაროლის შეცვლის State
+    // პაროლის შეცვლის ფორმის სტეიტები
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -30,17 +30,19 @@ const Panel = () => {
         try {
             await changeUserPassword({ currentPassword, newPassword });
             alert("Password changed successfully!");
+            // ფორმის გასუფთავება წარმატების შემდეგ
             setCurrentPassword("");
             setNewPassword("");
             setConfirmPassword("");
             setActiveTab("dashboard");
         } catch (error) {
-            alert("Failed to change password.");
+            alert("Failed to change password. Please check your current password.");
         }
     };
 
     return (
         <div className="flex h-screen bg-[#050505] font-sans text-white overflow-hidden pt-[80px] md:pt-[90px] relative z-[10]">
+            {/* BACKGROUND GLOW */}
             <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-[rgb(254,154,0)]/5 blur-[120px] rounded-full pointer-events-none" />
             <div className="fixed bottom-0 left-0 w-[300px] h-[300px] bg-[rgb(254,154,0)]/10 blur-[100px] rounded-full pointer-events-none" />
 
@@ -69,7 +71,7 @@ const Panel = () => {
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/20 transition-transform group-hover:scale-110" style={{ backgroundColor: accentColor }}>
                             <IconActivity size={20} color="black" stroke={3} />
                         </div>
-                        <span className="text-xl font-black italic tracking-tighter uppercase">Elite</span>
+                        <span className="text-xl font-black italic tracking-tighter uppercase text-white">Elite</span>
                     </Link>
                 </div>
 
@@ -87,11 +89,11 @@ const Panel = () => {
                     <div className="pt-8 mt-8 border-t border-white/5 space-y-1.5">
                         <p className="px-4 text-[10px] font-black uppercase tracking-[0.3em] text-gray-600 mb-4">Settings</p>
                         <button 
-                            onClick={() => { setActiveTab("profile"); setIsSidebarOpen(false); }}
-                            className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold transition-all group ${activeTab === 'profile' ? 'bg-white/5 text-white' : 'text-gray-500 hover:bg-white/5'}`}
+                            onClick={() => { setActiveTab("security"); setIsSidebarOpen(false); }}
+                            className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold transition-all group ${activeTab === 'security' ? 'bg-white/5 text-white' : 'text-gray-500 hover:bg-white/5'}`}
                         >
-                            <IconSettings size={20} className={`${activeTab === 'profile' ? '' : 'group-hover:rotate-45'} transition-transform`} style={{ color: activeTab === 'profile' ? accentColor : 'inherit' }} />
-                            Profile Config
+                            <IconSettings size={20} className={`${activeTab === 'security' ? '' : 'group-hover:rotate-45'} transition-transform`} style={{ color: activeTab === 'security' ? accentColor : 'inherit' }} />
+                            Security Config
                         </button>
                         <button
                             onClick={logout}
@@ -125,53 +127,85 @@ const Panel = () => {
                         <button onClick={() => setIsSidebarOpen(true)} className="md:hidden p-3 bg-white/5 rounded-xl border border-white/10">
                             <IconMenu2 size={20} />
                         </button>
-                        <div>
-                            <h1 className="text-2xl font-black uppercase tracking-tighter italic">
-                                {activeTab === "dashboard" ? "Overview " : "Security "}
-                                <span className="text-gray-600">{activeTab === "dashboard" ? "Dashboard" : "Settings"}</span>
-                            </h1>
-                        </div>
+                        <h1 className="text-2xl font-black uppercase tracking-tighter italic">
+                            {activeTab === "dashboard" ? "Overview " : "Security "} 
+                            <span className="text-gray-600">{activeTab === "dashboard" ? "Dashboard" : "Settings"}</span>
+                        </h1>
                     </div>
                 </header>
 
                 <div className="p-8 md:p-12 pt-6">
                     {activeTab === "dashboard" ? (
                         <>
-                            {/* STATS GRID (Keep your existing stats) */}
+                            {/* STATS GRID */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
                                 <div className="bg-[#0A0A0A] border border-white/5 p-6 rounded-[32px] group">
                                     <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center mb-4 text-[#FE9A00]"><IconCalendarStats /></div>
                                     <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest">Active Bookings</p>
                                     <p className="text-3xl font-black mt-1 italic">{myBookings.length}</p>
                                 </div>
-                                {/* ... Other stats ... */}
+                                <div className="bg-[#0A0A0A] border border-white/5 p-6 rounded-[32px]">
+                                    <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center mb-4 text-white"><IconMapPin /></div>
+                                    <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest">Active Status</p>
+                                    <p className="text-3xl font-black mt-1 italic">Verified</p>
+                                </div>
+                                <div className="bg-[#0A0A0A] border border-white/5 p-6 rounded-[32px]">
+                                    <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center mb-4 text-green-500"><IconCrown /></div>
+                                    <p className="text-gray-500 text-[10px] font-black uppercase tracking-widest">Member Tier</p>
+                                    <p className="text-3xl font-black mt-1 italic uppercase">{user?.role || 'Client'}</p>
+                                </div>
                             </div>
 
                             {/* BOOKING HISTORY TABLE */}
-                            <div className="bg-[#0A0A0A] rounded-[40px] border border-white/5 overflow-hidden">
+                            <div className="bg-[#0A0A0A] rounded-[40px] border border-white/5 overflow-hidden shadow-2xl">
                                 <div className="p-6 border-b border-white/5 flex justify-between items-center">
                                     <h3 className="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Booking History</h3>
                                 </div>
                                 <div className="p-4 md:p-8 overflow-x-auto no-scrollbar">
                                     <table className="w-full text-left">
-                                        {/* Your Table Content */}
+                                        <thead>
+                                            <tr className="border-b border-white/5">
+                                                <th className="px-6 py-4 text-[10px] uppercase font-black text-gray-600 tracking-[0.2em]">Vehicle</th>
+                                                <th className="px-6 py-4 text-[10px] uppercase font-black text-gray-600 tracking-[0.2em]">Date</th>
+                                                <th className="px-6 py-4 text-[10px] uppercase font-black text-gray-600 tracking-[0.2em]">Status</th>
+                                                <th className="px-6 py-4 text-[10px] uppercase font-black text-gray-600 tracking-[0.2em] text-right">Price</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-white/[0.02]">
+                                            {myBookings.length > 0 ? myBookings.map((booking, index) => (
+                                                <tr key={index} className="group hover:bg-white/[0.02] transition-colors">
+                                                    <td className="px-6 py-6 font-bold italic">{booking.car.model}</td>
+                                                    <td className="px-6 py-6 text-xs text-gray-500">
+                                                        {new Date(booking.startDate).toLocaleDateString('ka-GE')}
+                                                    </td>
+                                                    <td className="px-6 py-6">
+                                                        <span className="px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest bg-orange-500/10 text-orange-500 border border-orange-500/20">
+                                                            {booking.status}
+                                                        </span>
+                                                    </td>
+                                                    <td className="px-6 py-6 text-right font-black italic text-lg">${booking.totalPrice}</td>
+                                                </tr>
+                                            )) : (
+                                                <tr><td colSpan="4" className="py-20 text-center text-gray-600 font-bold italic uppercase tracking-widest">No active history</td></tr>
+                                            )}
+                                        </tbody>
                                     </table>
                                 </div>
                             </div>
                         </>
                     ) : (
-                        /* --- CHANGE PASSWORD FORM --- */
+                        /* --- CHANGE PASSWORD UI --- */
                         <motion.div 
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             className="max-w-xl mx-auto"
                         >
-                            <div className="bg-[#0A0A0A] border border-white/5 rounded-[40px] p-8 md:p-12 relative overflow-hidden">
+                            <div className="bg-[#0A0A0A] border border-white/5 rounded-[40px] p-8 md:p-12 relative overflow-hidden shadow-2xl">
                                 <div className="absolute top-0 right-0 p-8 opacity-5 text-[#FE9A00]"><IconLock size={120} /></div>
                                 
                                 <h3 className="text-2xl font-black uppercase tracking-tighter italic mb-8">Update <span className="text-[#FE9A00]">Security</span></h3>
                                 
-                                <form onSubmit={handlePasswordSubmit} className="space-y-6">
+                                <form onSubmit={handlePasswordSubmit} className="space-y-6 relative z-10">
                                     <div className="space-y-2">
                                         <label className="text-[10px] uppercase tracking-widest text-gray-500 font-black ml-1">Current Password</label>
                                         <input 
