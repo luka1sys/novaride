@@ -1,4 +1,5 @@
-import ChangePassword from "./ChangePassword"; // დარწმუნდი, რომ ფაილის გზა სწორია
+import ChangePassword from "./ChangePasswordForm";
+
 
 const AdminSystemConfig = () => {
     return (
