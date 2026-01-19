@@ -9,16 +9,16 @@ const Contact = () => {
         <section className="bg-black py-20 px-4 md:px-10 relative overflow-hidden">
             {/* ფონის დეკორაციები - Grid Pattern ნარინჯისფერში */}
             <div className="absolute inset-0 opacity-[0.1] [mask-image:radial-gradient(ellipse_at_center,white,transparent)] pointer-events-none">
-                <div 
-                    className="absolute inset-0" 
-                    style={{ 
-                        backgroundImage: `linear-gradient(${brandAccent} 1px, transparent 1px), linear-gradient(90deg, ${brandAccent} 1px, transparent 1px)`, 
-                        backgroundSize: '50px 50px' 
+                <div
+                    className="absolute inset-0"
+                    style={{
+                        backgroundImage: `linear-gradient(${brandAccent} 1px, transparent 1px), linear-gradient(90deg, ${brandAccent} 1px, transparent 1px)`,
+                        backgroundSize: '50px 50px'
                     }}
                 ></div>
             </div>
 
-            <motion.div 
+            <motion.div
                 initial={{ opacity: 0, y: 40 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
@@ -30,7 +30,7 @@ const Contact = () => {
                 <div className="absolute -bottom-24 -left-24 w-96 h-96 blur-[120px] rounded-full opacity-10" style={{ backgroundColor: brandAccent }}></div>
 
                 <div className="relative z-10 flex flex-col lg:flex-row items-center justify-between px-8 md:px-20 py-20 gap-16">
-                    
+
                     {/* ტექსტური ბლოკი */}
                     <div className="w-full lg:w-1/2">
                         <motion.div
@@ -48,7 +48,7 @@ const Contact = () => {
                             </div>
 
                             <h2 className="text-5xl md:text-8xl font-black text-white leading-[0.9] tracking-tighter uppercase mb-8">
-                                Take the <br /> 
+                                Take the <br />
                                 <span className="text-transparent" style={{ WebkitTextStroke: "1px rgba(255,255,255,0.2)" }}>Wheel</span> <br />
                                 <span style={{ color: brandAccent }}>Today.</span>
                             </h2>
@@ -58,17 +58,19 @@ const Contact = () => {
                             </p>
 
                             <div className="flex flex-wrap gap-6 items-center">
-                                <motion.button 
+                                <motion.button
                                     whileHover={{ scale: 1.05 }}
                                     whileTap={{ scale: 0.95 }}
                                     className="px-10 py-5 rounded-2xl font-black uppercase tracking-widest text-sm transition-all shadow-[0_20px_40px_rgba(0,0,0,0.4)] hover:shadow-[0_20px_50px_rgba(254,154,0,0.2)]"
                                     style={{ backgroundColor: brandAccent, color: '#000' }}
+                                    onClick={() => navigate('/contactus')}
                                 >
-                                    Book Now
+                                    contact us
                                 </motion.button>
-                                
-                                <button 
+
+                                <button
                                     className="text-white font-bold uppercase tracking-widest text-xs border-b-2 border-white/10 pb-2 transition-colors hover:border-[rgb(254,154,0)]"
+                                    onClick={() => navigate('/cars')}
                                 >
                                     View Full Fleet
                                 </button>
@@ -86,15 +88,15 @@ const Contact = () => {
                             className="relative z-10"
                         >
                             <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-transparent to-white/5 rounded-full blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
-                            
-                            <img 
-                                src="/cta-car-img.png" 
-                                alt="Luxury Car" 
+
+                            <img
+                                src="/cta-car-img.png"
+                                alt="Luxury Car"
                                 className="w-full h-auto drop-shadow-[0_35px_50px_rgba(0,0,0,0.9)] relative z-20"
                             />
 
                             {/* Floating Stats */}
-                            <motion.div 
+                            <motion.div
                                 animate={{ y: [0, -10, 0] }}
                                 transition={{ duration: 4, repeat: Infinity }}
                                 className="absolute -top-4 -right-4 md:right-0 p-4 rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 z-30 hidden md:block shadow-2xl"
