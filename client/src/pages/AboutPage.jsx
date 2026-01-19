@@ -6,7 +6,9 @@ import ExecutivePartners from "../components/ExecutivePartners";
 import Footer from "../components/Footer";
 import WatchOurVideo from "../components/WatchOurVideo";
 import About from "./About";
-import Comment from '../components/comment';
+import Comment from '../components/Comment';
+
+
 
 const AboutPage = () => {
     // Parallax ეფექტი ფონისთვის
@@ -104,6 +106,7 @@ const AboutPage = () => {
                 </Link>
             </section>
             <Comment/>
+        
             <Footer />
             {/* CSS for Text Stroke */}
             <style jsx>{`
