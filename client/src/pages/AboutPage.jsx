@@ -103,9 +103,7 @@ const AboutPage = () => {
                 </Link>
             </section>
             <Comment/>
-
             <Footer />
-
             {/* CSS for Text Stroke */}
             <style jsx>{`
                 .stroke-white {
