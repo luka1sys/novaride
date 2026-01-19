@@ -102,6 +102,7 @@ const AboutPage = () => {
                     </button>
                 </Link>
             </section>
+            <Comment/>
 
             <Footer />
 
