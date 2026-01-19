@@ -32,19 +32,23 @@ export const AuthProvider = ({ children }) => {
         const toastId = toast.loading('Signing up...');
         try {
             const response = await signupUser(data);
-            if (!response) {
-                throw new Error('Signup failed');
+
+            // ვამოწმებთ, რომ response ნამდვილად წარმატებულია
+            if (response) {
+                toast.update(toastId, {
+                    render: 'Signup successfully',
+                    type: 'success',
+                    isLoading: false,
+                    autoClose: 2000
+                });
+                setActiveTab("login");
             }
-            toast.update(toastId, {
-                render: 'Signup successfully',
-                type: 'success',
-                isLoading: false,
-                autoClose: 2000
-            })
-            setActiveTab("login")
         } catch (error) {
+            // უსაფრთხო შემოწმება შეცდომის შეტყობინებაზე
+            const errorMessage = error.response?.data?.message || "Something went wrong";
+
             toast.update(toastId, {
-                render: error.response.data.message,
+                render: errorMessage,
                 type: "error",
                 isLoading: false,
                 autoClose: 3000,
@@ -52,7 +56,6 @@ export const AuthProvider = ({ children }) => {
         }
     };
 
-    console.log("heyyy", user);
 
     const login = async (data) => {
         const toastId = toast.loading('logining...');
