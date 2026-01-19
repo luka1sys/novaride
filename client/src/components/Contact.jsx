@@ -1,9 +1,11 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
 
 const Contact = () => {
     // თქვენი ახალი ფერი: ნარინჯისფერი
     const brandAccent = 'rgb(254, 154, 0)';
+    const navigate = useNavigate();
 
     return (
         <section className="bg-black py-20 px-4 md:px-10 relative overflow-hidden">
