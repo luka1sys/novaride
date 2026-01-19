@@ -3,6 +3,7 @@ import { useAuth } from "../contexts/AuthContext";
 import UserControl from "../components/userControl";
 import CarControl from "../components/CarControl";
 import BookingsControl from "../components/BookingsControl";
+import AdminSystemConfig from "../components/AdminSystemConfig"; // დაიმპორტდა შენი ახალი კომპონენტი
 import { motion, AnimatePresence } from "framer-motion";
 import {
     IconUsers, IconCar, IconCalendarStats, IconSettings,
@@ -13,7 +14,7 @@ import { useCars } from "../contexts/CarsContext";
 
 const AdminPanel = () => {
     const { logout, users, user, userCount } = useAuth();
-    const { totalRevenue, myBookings } = useBooking(); // დავამატე myBookings
+    const { totalRevenue, myBookings } = useBooking();
     const { totalCars } = useCars();
 
     const [activeTab, setActiveTab] = useState("users");
@@ -25,7 +26,7 @@ const AdminPanel = () => {
         { id: "cars", label: "Fleet Control", icon: <IconCar size={20} /> },
         { id: "users", label: "User Directory", icon: <IconUsers size={20} /> },
         { id: "bookings", label: "Booking Control", icon: <IconCalendarStats size={20} /> },
-        { id: "my-bookings", label: "My Bookings", icon: <IconActivity size={20} /> }, // ახალი ველი
+        { id: "my-bookings", label: "My Bookings", icon: <IconActivity size={20} /> },
     ];
 
     return (
@@ -86,10 +87,17 @@ const AdminPanel = () => {
 
                     <div className="pt-8 mt-8 border-t border-white/5 space-y-1.5">
                         <p className="px-4 text-[10px] font-black uppercase tracking-[0.3em] text-gray-600 mb-4">Account</p>
-                        <button className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold text-gray-500 hover:bg-white/5 transition-all group">
-                            <IconSettings size={20} className="group-hover:rotate-45 transition-transform" />
+                        
+                        {/* System Config ღილაკი, რომელიც ააქტიურებს tab-ს */}
+                        <button 
+                            onClick={() => { setActiveTab("config"); setIsSidebarOpen(false); }}
+                            className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold transition-all group
+                                ${activeTab === "config" ? 'bg-white/5 text-[rgb(254,154,0)]' : 'text-gray-500 hover:bg-white/5'}`}
+                        >
+                            <IconSettings size={20} className={`${activeTab === "config" ? '' : 'group-hover:rotate-45'} transition-transform`} />
                             System Config
                         </button>
+
                         <button
                             onClick={logout}
                             className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold text-red-500/70 hover:bg-red-500/5 transition-all"
@@ -162,23 +170,28 @@ const AdminPanel = () => {
                     {/* DATA TERMINAL */}
                     <div className="relative">
                         <div className="absolute inset-0 bg-[rgb(254,154,0)]/2 blur-[100px] pointer-events-none" />
-                        <div className="bg-[#0A0A0A] rounded-[40px] border border-white/5 shadow-2xl shadow-black overflow-hidden relative">
-                            <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/[0.01]">
-                                <h3 className="text-xs font-black uppercase tracking-[0.2em] text-gray-400">
-                                    {activeTab === "my-bookings" ? "My Personal History" : "Live Data Feed"}
-                                </h3>
-                                <div className="flex gap-2">
-                                    <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
-                                    <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
-                                    <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50" />
+                        <div className={`bg-[#0A0A0A] rounded-[40px] border border-white/5 shadow-2xl shadow-black overflow-hidden relative ${activeTab === 'config' ? 'bg-transparent border-none shadow-none' : ''}`}>
+                            
+                            {/* ტერმინალის ჰედერი - ვმალავთ თუ კონფიგურაციაა არჩეული, რადგან მას თავისი დიზაინი აქვს */}
+                            {activeTab !== "config" && (
+                                <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/[0.01]">
+                                    <h3 className="text-xs font-black uppercase tracking-[0.2em] text-gray-400">
+                                        {activeTab === "my-bookings" ? "My Personal History" : "Live Data Feed"}
+                                    </h3>
+                                    <div className="flex gap-2">
+                                        <div className="w-2.5 h-2.5 rounded-full bg-red-500/20 border border-red-500/50" />
+                                        <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/20 border border-yellow-500/50" />
+                                        <div className="w-2.5 h-2.5 rounded-full bg-green-500/20 border border-green-500/50" />
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="p-4 md:p-8 overflow-x-auto no-scrollbar">
+                            )}
+
+                            <div className={`${activeTab === 'config' ? 'p-0' : 'p-4 md:p-8'} overflow-x-auto no-scrollbar`}>
                                 {activeTab === "users" && <UserControl users={users} />}
                                 {activeTab === "cars" && <CarControl />}
                                 {activeTab === "bookings" && <BookingsControl />}
+                                {activeTab === "config" && <AdminSystemConfig />}
 
-                                {/* ახალი პირობა ადმინის პირადი ჯავშნებისთვის */}
                                 {activeTab === "my-bookings" && (
                                     <table className="w-full text-left border-collapse min-w-[600px]">
                                         <thead>
