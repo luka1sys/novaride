@@ -17,6 +17,7 @@ import { ToastContainer } from "react-toastify";
 import Car from './pages/Car';
 import ConactUs from './pages/ContactUs';
 import Service from './pages/Service';
+import ScrollToTop from './utils/ScrollToTop';
 
 // დამცავი კომპონენტი როუტებისთვის
 const ProtectedRoute = ({ children, adminOnly = false }) => {
@@ -36,11 +37,11 @@ function App() {
   useEffect(() => {
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2000); // 3 წამიდან 2-მდე ჩამოვწიე სისწრაფისთვის
+    }, 2000);
     return () => clearTimeout(timer);
   }, []);
 
-  // კურსორის ლოგიკა
+
   useEffect(() => {
     const dot = document.getElementById("cursor-dot");
     if (!dot) return;
@@ -57,7 +58,7 @@ function App() {
     return (
       <div className="flex justify-center items-center h-screen bg-[#050505]">
         <div className="relative">
-          {/* აქცენტი შეცვლილია ნარინჯისფერზე */}
+
           <div className="animate-spin rounded-full h-20 w-20 border-t-2 border-[#fe9a00] shadow-[0_0_20px_rgba(254,154,0,0.3)]"></div>
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-[#fe9a00] font-bold text-sm tracking-widest">NR</span>
@@ -69,13 +70,13 @@ function App() {
 
   return (
     <div className="w-full overflow-x-hidden bg-[#050505] min-h-screen">
-      {/* კურსორის ფერიც შევცვალე ერთიანი სტილისთვის */}
       <div
         id="cursor-dot"
         className="fixed top-0 left-0 w-[8px] h-[8px] bg-[#fe9a00] rounded-full pointer-events-none z-[9999] mix-blend-difference transition-transform duration-100 ease-out shadow-[0_0_10px_rgba(254,154,0,0.8)]"
       ></div>
 
       <Navbar />
+      <ScrollToTop /> {/* აქ ჩასვი */}
       <ScrollAnimations />
       <ToastContainer theme="dark" />
 
@@ -90,7 +91,7 @@ function App() {
         <Route path='/carspage' element={<CarsPage />} />
         <Route path='/car/:id' element={<Car />} />
         <Route path='/service' element={<Service />} />
-        
+
 
         {/* User Dashboard */}
         <Route path="/panel" element={
