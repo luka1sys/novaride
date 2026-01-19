@@ -15,18 +15,24 @@ const Panel = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [activeTab, setActiveTab] = useState("dashboard");
 
-    // პაროლის ფორმის სტეიტები
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
-    // პაროლის ხილვადობის სტეიტები
     const [showCurrent, setShowCurrent] = useState(false);
     const [showNew, setShowNew] = useState(false);
     const [showConfirm, setShowConfirm] = useState(false);
 
     const accentColor = "rgb(254, 154, 0)";
+
+    // დამხმარე ფუნქცია სტატუსის ფერებისთვის
+    const getStatusStyles = (status) => {
+        const s = status?.toLowerCase();
+        if (s === 'confirmed') return "bg-green-500/10 text-green-500 border-green-500/20";
+        if (s === 'completed') return "bg-gray-500/10 text-gray-500 border-gray-500/20";
+        return "bg-orange-500/10 text-orange-500 border-orange-500/20";
+    };
 
     const handlePasswordSubmit = async (e) => {
         e.preventDefault();
@@ -51,7 +57,6 @@ const Panel = () => {
 
     return (
         <div className="flex h-screen bg-[#050505] font-sans text-white overflow-hidden pt-[80px] md:pt-[90px] relative z-[10]">
-            {/* BACKGROUND GLOW */}
             <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-[rgb(254,154,0)]/5 blur-[120px] rounded-full pointer-events-none" />
             
             <AnimatePresence>
@@ -129,7 +134,6 @@ const Panel = () => {
                 <div className="p-8 md:p-12 pt-6">
                     {activeTab === "dashboard" ? (
                         <>
-                            {/* STATS GRID */}
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-10">
                                 <div className="bg-[#0A0A0A] border border-white/5 p-6 rounded-[32px] group">
                                     <div className="w-10 h-10 rounded-2xl bg-white/5 flex items-center justify-center mb-4 text-[#FE9A00]"><IconCalendarStats /></div>
@@ -148,7 +152,6 @@ const Panel = () => {
                                 </div>
                             </div>
 
-                            {/* TABLE... (შენარჩუნებულია უცვლელად) */}
                             <div className="bg-[#0A0A0A] rounded-[40px] border border-white/5 overflow-hidden shadow-2xl">
                                 <div className="p-6 border-b border-white/5 flex justify-between items-center">
                                     <h3 className="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Booking History</h3>
@@ -168,7 +171,11 @@ const Panel = () => {
                                                 <tr key={index} className="group hover:bg-white/[0.02] transition-colors">
                                                     <td className="px-6 py-6 font-bold italic">{booking.car.model}</td>
                                                     <td className="px-6 py-6 text-xs text-gray-500">{new Date(booking.startDate).toLocaleDateString('ka-GE')}</td>
-                                                    <td className="px-6 py-6"><span className="px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest bg-orange-500/10 text-orange-500 border border-orange-500/20">{booking.status}</span></td>
+                                                    <td className="px-6 py-6">
+                                                        <span className={`px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest border ${getStatusStyles(booking.status)}`}>
+                                                            {booking.status}
+                                                        </span>
+                                                    </td>
                                                     <td className="px-6 py-6 text-right font-black italic text-lg">${booking.totalPrice}</td>
                                                 </tr>
                                             )) : (
@@ -199,8 +206,8 @@ const Panel = () => {
                                                     <IconUser size={22} />
                                                 </div>
                                                 <div>
-                                                    <p className="text-[10px] uppercase font-black text-gray-600 tracking-widest">Full Name</p>
-                                                    <p className="font-bold text-lg italic tracking-tight">{user?.fullname}</p>
+                                                    <p className="text-[10px] uppercase font-bold text-gray-600 tracking-widest">Full Name</p>
+                                                    <p className="text-lg text-white font-medium">{user?.fullname}</p>
                                                 </div>
                                             </div>
 
@@ -209,8 +216,8 @@ const Panel = () => {
                                                     <IconMail size={22} />
                                                 </div>
                                                 <div className="overflow-hidden">
-                                                    <p className="text-[10px] uppercase font-black text-gray-600 tracking-widest">Email Address</p>
-                                                    <p className="font-bold text-sm truncate text-gray-300">{user?.email || "not-provided@elite.com"}</p>
+                                                    <p className="text-[10px] uppercase font-bold text-gray-600 tracking-widest">Email Address</p>
+                                                    <p className="text-sm truncate text-gray-300 font-medium">{user?.email || "not-provided@elite.com"}</p>
                                                 </div>
                                             </div>
 
@@ -219,8 +226,8 @@ const Panel = () => {
                                                     <IconCrown size={22} />
                                                 </div>
                                                 <div>
-                                                    <p className="text-[10px] uppercase font-black text-gray-600 tracking-widest">Account Status</p>
-                                                    <p className="font-bold italic text-[#FE9A00] uppercase text-sm tracking-tighter">{user?.role || 'Client'}</p>
+                                                    <p className="text-[10px] uppercase font-bold text-gray-600 tracking-widest">Account Status</p>
+                                                    <p className="text-[#FE9A00] uppercase text-sm font-bold">{user?.role || 'Client'}</p>
                                                 </div>
                                             </div>
                                         </div>
@@ -245,16 +252,15 @@ const Panel = () => {
                             >
                                 <div className="bg-[#0A0A0A] border border-white/5 rounded-[40px] p-8 md:p-12 relative overflow-hidden shadow-2xl">
                                     <div className="absolute top-0 right-0 p-8 opacity-5 text-[#FE9A00]"><IconLock size={120} /></div>
-                                    <h3 className="text-2xl font-black uppercase tracking-tighter italic mb-8">Update <span className="text-[#FE9A00]">Security</span></h3>
+                                    <h3 className="text-2xl font-bold uppercase tracking-tight mb-8">Update <span className="text-[#FE9A00]">Security</span></h3>
                                     
                                     <form onSubmit={handlePasswordSubmit} className="space-y-6 relative z-10">
-                                        {/* Current Password */}
                                         <div className="space-y-2">
-                                            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-black ml-1">Current Password</label>
+                                            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">Current Password</label>
                                             <div className="relative">
                                                 <input 
                                                     type={showCurrent ? "text" : "password"}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm pr-12"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm pr-12 font-sans"
                                                     placeholder="••••••••"
                                                     value={currentPassword}
                                                     onChange={(e) => setCurrentPassword(e.target.value)}
@@ -266,13 +272,12 @@ const Panel = () => {
                                             </div>
                                         </div>
 
-                                        {/* New Password */}
                                         <div className="space-y-2">
-                                            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-black ml-1">New Password</label>
+                                            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">New Password</label>
                                             <div className="relative">
                                                 <input 
                                                     type={showNew ? "text" : "password"}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm pr-12"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm pr-12 font-sans"
                                                     placeholder="••••••••"
                                                     value={newPassword}
                                                     onChange={(e) => setNewPassword(e.target.value)}
@@ -284,13 +289,12 @@ const Panel = () => {
                                             </div>
                                         </div>
 
-                                        {/* Confirm Password */}
                                         <div className="space-y-2">
-                                            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-black ml-1">Confirm New Password</label>
+                                            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-bold ml-1">Confirm New Password</label>
                                             <div className="relative">
                                                 <input 
                                                     type={showConfirm ? "text" : "password"}
-                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm pr-12"
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm pr-12 font-sans"
                                                     placeholder="••••••••"
                                                     value={confirmPassword}
                                                     onChange={(e) => setConfirmPassword(e.target.value)}
@@ -305,7 +309,7 @@ const Panel = () => {
                                         <button 
                                             type="submit"
                                             disabled={loading}
-                                            className="w-full bg-[#FE9A00] text-black font-black uppercase tracking-widest py-5 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg shadow-orange-500/10 disabled:opacity-50"
+                                            className="w-full bg-[#FE9A00] text-black font-bold uppercase tracking-widest py-5 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg shadow-orange-500/10 disabled:opacity-50"
                                         >
                                             {loading ? "Processing..." : "Apply New Password"}
                                         </button>
