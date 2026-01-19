@@ -5,19 +5,26 @@ import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
     IconCar, IconCalendarStats, IconSettings,
-    IconLogout, IconMenu2, IconActivity, IconMapPin, IconCrown, IconLock
+    IconLogout, IconMenu2, IconActivity, IconMapPin, IconCrown, IconLock,
+    IconUser, IconMail, IconEye, IconEyeOff
 } from "@tabler/icons-react";
 
 const Panel = () => {
     const { logout, user, changeUserPassword } = useAuth();
     const { myBookings } = useBooking();
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-    const [activeTab, setActiveTab] = useState("dashboard"); // ტაბების მართვა
+    const [activeTab, setActiveTab] = useState("dashboard");
 
-    // პაროლის შეცვლის ფორმის სტეიტები
+    // პაროლის ფორმის სტეიტები
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [loading, setLoading] = useState(false);
+
+    // პაროლის ხილვადობის სტეიტები
+    const [showCurrent, setShowCurrent] = useState(false);
+    const [showNew, setShowNew] = useState(false);
+    const [showConfirm, setShowConfirm] = useState(false);
 
     const accentColor = "rgb(254, 154, 0)";
 
@@ -27,16 +34,18 @@ const Panel = () => {
             alert("Passwords do not match");
             return;
         }
+        setLoading(true);
         try {
             await changeUserPassword({ currentPassword, newPassword });
             alert("Password changed successfully!");
-            // ფორმის გასუფთავება წარმატების შემდეგ
             setCurrentPassword("");
             setNewPassword("");
             setConfirmPassword("");
             setActiveTab("dashboard");
         } catch (error) {
             alert("Failed to change password. Please check your current password.");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -44,8 +53,7 @@ const Panel = () => {
         <div className="flex h-screen bg-[#050505] font-sans text-white overflow-hidden pt-[80px] md:pt-[90px] relative z-[10]">
             {/* BACKGROUND GLOW */}
             <div className="fixed top-0 right-0 w-[500px] h-[500px] bg-[rgb(254,154,0)]/5 blur-[120px] rounded-full pointer-events-none" />
-            <div className="fixed bottom-0 left-0 w-[300px] h-[300px] bg-[rgb(254,154,0)]/10 blur-[100px] rounded-full pointer-events-none" />
-
+            
             <AnimatePresence>
                 {isSidebarOpen && (
                     <motion.div
@@ -59,13 +67,7 @@ const Panel = () => {
             </AnimatePresence>
 
             {/* --- SIDEBAR --- */}
-            <aside className={`
-                fixed md:relative z-[160]
-                w-72 bg-[#0A0A0A] border-r border-white/5 
-                flex flex-col transition-all duration-500 ease-in-out
-                h-full
-                ${isSidebarOpen ? "left-0" : "-left-full md:left-0"}
-            `}>
+            <aside className={`fixed md:relative z-[160] w-72 bg-[#0A0A0A] border-r border-white/5 flex flex-col transition-all duration-500 ease-in-out h-full ${isSidebarOpen ? "left-0" : "-left-full md:left-0"}`}>
                 <div className="p-8 mb-4">
                     <Link to="/" className="flex items-center gap-3 group">
                         <div className="w-8 h-8 rounded-lg flex items-center justify-center shadow-lg shadow-orange-500/20 transition-transform group-hover:scale-110" style={{ backgroundColor: accentColor }}>
@@ -77,28 +79,18 @@ const Panel = () => {
 
                 <nav className="flex-1 px-4 space-y-1.5 overflow-y-auto no-scrollbar">
                     <p className="px-4 text-[10px] font-black uppercase tracking-[0.3em] text-gray-600 mb-4">User Menu</p>
-                    
-                    <button 
-                        onClick={() => { setActiveTab("dashboard"); setIsSidebarOpen(false); }}
-                        className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold transition-all ${activeTab === 'dashboard' ? 'bg-white/5 text-white' : 'text-gray-500 hover:bg-white/5'}`}
-                    >
+                    <button onClick={() => { setActiveTab("dashboard"); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold transition-all ${activeTab === 'dashboard' ? 'bg-white/5 text-white' : 'text-gray-500 hover:bg-white/5'}`}>
                         <span style={{ color: activeTab === 'dashboard' ? accentColor : 'inherit' }}><IconActivity size={20} /></span>
                         Dashboard
                     </button>
 
                     <div className="pt-8 mt-8 border-t border-white/5 space-y-1.5">
                         <p className="px-4 text-[10px] font-black uppercase tracking-[0.3em] text-gray-600 mb-4">Settings</p>
-                        <button 
-                            onClick={() => { setActiveTab("security"); setIsSidebarOpen(false); }}
-                            className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold transition-all group ${activeTab === 'security' ? 'bg-white/5 text-white' : 'text-gray-500 hover:bg-white/5'}`}
-                        >
+                        <button onClick={() => { setActiveTab("security"); setIsSidebarOpen(false); }} className={`w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold transition-all group ${activeTab === 'security' ? 'bg-white/5 text-white' : 'text-gray-500 hover:bg-white/5'}`}>
                             <IconSettings size={20} className={`${activeTab === 'security' ? '' : 'group-hover:rotate-45'} transition-transform`} style={{ color: activeTab === 'security' ? accentColor : 'inherit' }} />
                             Security Config
                         </button>
-                        <button
-                            onClick={logout}
-                            className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold text-red-500/70 hover:bg-red-500/5 transition-all"
-                        >
+                        <button onClick={logout} className="w-full flex items-center gap-4 px-4 py-3.5 rounded-2xl text-sm font-semibold text-red-500/70 hover:bg-red-500/5 transition-all">
                             <IconLogout size={20} />
                             Terminate Session
                         </button>
@@ -156,7 +148,7 @@ const Panel = () => {
                                 </div>
                             </div>
 
-                            {/* BOOKING HISTORY TABLE */}
+                            {/* TABLE... (შენარჩუნებულია უცვლელად) */}
                             <div className="bg-[#0A0A0A] rounded-[40px] border border-white/5 overflow-hidden shadow-2xl">
                                 <div className="p-6 border-b border-white/5 flex justify-between items-center">
                                     <h3 className="text-xs font-black uppercase tracking-[0.2em] text-gray-400">Booking History</h3>
@@ -175,14 +167,8 @@ const Panel = () => {
                                             {myBookings.length > 0 ? myBookings.map((booking, index) => (
                                                 <tr key={index} className="group hover:bg-white/[0.02] transition-colors">
                                                     <td className="px-6 py-6 font-bold italic">{booking.car.model}</td>
-                                                    <td className="px-6 py-6 text-xs text-gray-500">
-                                                        {new Date(booking.startDate).toLocaleDateString('ka-GE')}
-                                                    </td>
-                                                    <td className="px-6 py-6">
-                                                        <span className="px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest bg-orange-500/10 text-orange-500 border border-orange-500/20">
-                                                            {booking.status}
-                                                        </span>
-                                                    </td>
+                                                    <td className="px-6 py-6 text-xs text-gray-500">{new Date(booking.startDate).toLocaleDateString('ka-GE')}</td>
+                                                    <td className="px-6 py-6"><span className="px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-widest bg-orange-500/10 text-orange-500 border border-orange-500/20">{booking.status}</span></td>
                                                     <td className="px-6 py-6 text-right font-black italic text-lg">${booking.totalPrice}</td>
                                                 </tr>
                                             )) : (
@@ -194,60 +180,139 @@ const Panel = () => {
                             </div>
                         </>
                     ) : (
-                        /* --- CHANGE PASSWORD UI --- */
-                        <motion.div 
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            className="max-w-xl mx-auto"
-                        >
-                            <div className="bg-[#0A0A0A] border border-white/5 rounded-[40px] p-8 md:p-12 relative overflow-hidden shadow-2xl">
-                                <div className="absolute top-0 right-0 p-8 opacity-5 text-[#FE9A00]"><IconLock size={120} /></div>
+                        /* --- SECURITY CONFIG TAB --- */
+                        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+                            
+                            {/* USER DATA CARD */}
+                            <motion.div 
+                                initial={{ opacity: 0, x: -20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                className="lg:col-span-5 space-y-4"
+                            >
+                                <div className="bg-[#0A0A0A] border border-white/5 rounded-[40px] p-8 shadow-2xl relative overflow-hidden">
+                                    <div className="relative z-10">
+                                        <p className="text-[10px] font-black uppercase tracking-[0.3em] text-[#FE9A00] mb-6 text-center lg:text-left">Profile Identity</p>
+                                        
+                                        <div className="space-y-6">
+                                            <div className="flex items-center gap-4 group">
+                                                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 group-hover:text-white transition-colors">
+                                                    <IconUser size={22} />
+                                                </div>
+                                                <div>
+                                                    <p className="text-[10px] uppercase font-black text-gray-600 tracking-widest">Full Name</p>
+                                                    <p className="font-bold text-lg italic tracking-tight">{user?.fullname}</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-4 group">
+                                                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 group-hover:text-white transition-colors">
+                                                    <IconMail size={22} />
+                                                </div>
+                                                <div className="overflow-hidden">
+                                                    <p className="text-[10px] uppercase font-black text-gray-600 tracking-widest">Email Address</p>
+                                                    <p className="font-bold text-sm truncate text-gray-300">{user?.email || "not-provided@elite.com"}</p>
+                                                </div>
+                                            </div>
+
+                                            <div className="flex items-center gap-4 group">
+                                                <div className="w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center text-gray-400 group-hover:text-white transition-colors">
+                                                    <IconCrown size={22} />
+                                                </div>
+                                                <div>
+                                                    <p className="text-[10px] uppercase font-black text-gray-600 tracking-widest">Account Status</p>
+                                                    <p className="font-bold italic text-[#FE9A00] uppercase text-sm tracking-tighter">{user?.role || 'Client'}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="absolute -bottom-10 -right-10 opacity-[0.02] text-white rotate-12 pointer-events-none">
+                                        <IconUser size={200} />
+                                    </div>
+                                </div>
                                 
-                                <h3 className="text-2xl font-black uppercase tracking-tighter italic mb-8">Update <span className="text-[#FE9A00]">Security</span></h3>
-                                
-                                <form onSubmit={handlePasswordSubmit} className="space-y-6 relative z-10">
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] uppercase tracking-widest text-gray-500 font-black ml-1">Current Password</label>
-                                        <input 
-                                            type="password"
-                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm"
-                                            placeholder="••••••••"
-                                            value={currentPassword}
-                                            onChange={(e) => setCurrentPassword(e.target.value)}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] uppercase tracking-widest text-gray-500 font-black ml-1">New Password</label>
-                                        <input 
-                                            type="password"
-                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm"
-                                            placeholder="••••••••"
-                                            value={newPassword}
-                                            onChange={(e) => setNewPassword(e.target.value)}
-                                            required
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-[10px] uppercase tracking-widest text-gray-500 font-black ml-1">Confirm New Password</label>
-                                        <input 
-                                            type="password"
-                                            className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm"
-                                            placeholder="••••••••"
-                                            value={confirmPassword}
-                                            onChange={(e) => setConfirmPassword(e.target.value)}
-                                            required
-                                        />
-                                    </div>
-                                    <button 
-                                        type="submit"
-                                        className="w-full bg-[#FE9A00] text-black font-black uppercase tracking-widest py-5 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg shadow-orange-500/10"
-                                    >
-                                        Apply New Password
-                                    </button>
-                                </form>
-                            </div>
-                        </motion.div>
+                                <div className="bg-orange-500/5 border border-orange-500/10 rounded-[30px] p-6">
+                                    <p className="text-[9px] leading-relaxed text-orange-500/60 font-medium uppercase tracking-widest text-center">
+                                        User data is encrypted and synced with our primary node. Contact support to change your identity information.
+                                    </p>
+                                </div>
+                            </motion.div>
+
+                            {/* CHANGE PASSWORD FORM */}
+                            <motion.div 
+                                initial={{ opacity: 0, x: 20 }}
+                                animate={{ opacity: 1, x: 0 }}
+                                className="lg:col-span-7"
+                            >
+                                <div className="bg-[#0A0A0A] border border-white/5 rounded-[40px] p-8 md:p-12 relative overflow-hidden shadow-2xl">
+                                    <div className="absolute top-0 right-0 p-8 opacity-5 text-[#FE9A00]"><IconLock size={120} /></div>
+                                    <h3 className="text-2xl font-black uppercase tracking-tighter italic mb-8">Update <span className="text-[#FE9A00]">Security</span></h3>
+                                    
+                                    <form onSubmit={handlePasswordSubmit} className="space-y-6 relative z-10">
+                                        {/* Current Password */}
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-black ml-1">Current Password</label>
+                                            <div className="relative">
+                                                <input 
+                                                    type={showCurrent ? "text" : "password"}
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm pr-12"
+                                                    placeholder="••••••••"
+                                                    value={currentPassword}
+                                                    onChange={(e) => setCurrentPassword(e.target.value)}
+                                                    required
+                                                />
+                                                <button type="button" onClick={() => setShowCurrent(!showCurrent)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-white transition-colors">
+                                                    {showCurrent ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        {/* New Password */}
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-black ml-1">New Password</label>
+                                            <div className="relative">
+                                                <input 
+                                                    type={showNew ? "text" : "password"}
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm pr-12"
+                                                    placeholder="••••••••"
+                                                    value={newPassword}
+                                                    onChange={(e) => setNewPassword(e.target.value)}
+                                                    required
+                                                />
+                                                <button type="button" onClick={() => setShowNew(!showNew)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-white transition-colors">
+                                                    {showNew ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        {/* Confirm Password */}
+                                        <div className="space-y-2">
+                                            <label className="text-[10px] uppercase tracking-widest text-gray-500 font-black ml-1">Confirm New Password</label>
+                                            <div className="relative">
+                                                <input 
+                                                    type={showConfirm ? "text" : "password"}
+                                                    className="w-full bg-white/5 border border-white/10 rounded-2xl px-5 py-4 focus:outline-none focus:border-[#FE9A00]/50 transition-all text-sm pr-12"
+                                                    placeholder="••••••••"
+                                                    value={confirmPassword}
+                                                    onChange={(e) => setConfirmPassword(e.target.value)}
+                                                    required
+                                                />
+                                                <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-600 hover:text-white transition-colors">
+                                                    {showConfirm ? <IconEyeOff size={18} /> : <IconEye size={18} />}
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <button 
+                                            type="submit"
+                                            disabled={loading}
+                                            className="w-full bg-[#FE9A00] text-black font-black uppercase tracking-widest py-5 rounded-2xl hover:scale-[1.02] active:scale-[0.98] transition-all duration-300 shadow-lg shadow-orange-500/10 disabled:opacity-50"
+                                        >
+                                            {loading ? "Processing..." : "Apply New Password"}
+                                        </button>
+                                    </form>
+                                </div>
+                            </motion.div>
+                        </div>
                     )}
                 </div>
             </main>
