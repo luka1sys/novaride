@@ -6,7 +6,7 @@ import ExecutivePartners from "../components/ExecutivePartners";
 import Footer from "../components/Footer";
 import WatchOurVideo from "../components/WatchOurVideo";
 import About from "./About";
-import Comment from '../components/Comment';
+import Testimonials from '../components/comment';
 
 
 
@@ -105,7 +105,7 @@ const AboutPage = () => {
                     </button>
                 </Link>
             </section>
-            <Comment/>
+            <Testimonials/>
         
             <Footer />
             {/* CSS for Text Stroke */}

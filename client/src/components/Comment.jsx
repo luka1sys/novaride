@@ -1,7 +1,8 @@
 import React from 'react';
 
-const Comment = () => {
-    // მონაცემების მასივი
+const Testimonials = () => {
+    const brandAccent = 'rgb(254, 154, 0)';
+    
     const testimonials = [
         {
             id: 1,
@@ -23,39 +24,50 @@ const Comment = () => {
             role: "Project Manager",
             image: "/coment3.jpg",
             stars: 5,
+        },
+        {
+            id: 4,
+            name: "Annette Black",
+            role: "Project Manager",
+            image: "/coment4.jpg",
+            stars: 5,
         }
     ];
 
-    const brandAccent = '#fe9a00'; // შენი ძირითადი ნარინჯისფერი
-
     return (
-        <section className="py-24 px-4 md:px-10 bg-[#050505]">
-            <div className="max-w-7xl mx-auto">
+        <section className="py-24 px-4 md:px-10 bg-[#050505] relative overflow-hidden">
+            {/* ფონის დეკორატიული ელემენტი */}
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[rgb(254,154,0)] opacity-[0.03] blur-[120px] rounded-full"></div>
+
+            <div className="max-w-7xl mx-auto relative z-10">
                 
-                {/* სათაურის ნაწილი */}
+                {/* სათაური */}
                 <div className="mb-16">
-                    <span className="text-[#fe9a00] font-bold uppercase tracking-[0.2em] text-sm mb-4 block">
-                        Testimonials
-                    </span>
-                    <h2 className="text-4xl md:text-5xl font-black text-white leading-tight max-w-2xl uppercase tracking-tighter">
-                        What our customers are <br /> 
-                        <span className="text-gray-500">saying about us</span>
+                    <div className="flex items-center gap-3 mb-4">
+                        <div className="w-10 h-[2px]" style={{ backgroundColor: brandAccent }}></div>
+                        <span className="font-bold uppercase tracking-[0.3em] text-xs" style={{ color: brandAccent }}>
+                            Testimonials
+                        </span>
+                    </div>
+                    <h2 className="text-4xl md:text-6xl font-black text-white leading-[0.9] uppercase tracking-tighter">
+                        What our customers <br /> 
+                        <span className="text-white/20">are saying about us</span>
                     </h2>
                 </div>
 
-                {/* ქარდების კონტეინერი */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+                {/* ქარდების კონტეინერი (4 სვეტიან grid-ში) */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
                     {testimonials.map((item) => (
                         <div 
                             key={item.id} 
-                            className="bg-white rounded-[40px] p-10 flex flex-col h-full transition-transform hover:-translate-y-2 duration-300"
+                            className="bg-[#111111] border border-white/5 rounded-[30px] p-8 flex flex-col h-full transition-all duration-500 hover:border-[rgb(254,154,0)]/30 group"
                         >
                             {/* ვარსკვლავები */}
-                            <div className="flex gap-1 mb-8">
+                            <div className="flex gap-1 mb-6">
                                 {[...Array(5)].map((_, i) => (
                                     <svg 
                                         key={i}
-                                        className={`w-5 h-5 ${i < item.stars ? 'text-[#ff4d1c]' : 'text-gray-200'}`} 
+                                        className={`w-4 h-4 ${i < item.stars ? 'text-[rgb(254,154,0)]' : 'text-white/10'}`} 
                                         fill="currentColor" 
                                         viewBox="0 0 20 20"
                                     >
@@ -65,43 +77,46 @@ const Comment = () => {
                             </div>
 
                             {/* ტექსტი */}
-                            <p className="text-gray-600 text-[17px] leading-relaxed mb-12 flex-grow">
-                                Renting a car from nova ride was a great decision. Not only did I get a reliable and comfortable vehicle, but the prices were also very competitive.
+                            <p className="text-gray-400 text-sm leading-relaxed mb-10 flex-grow group-hover:text-gray-200 transition-colors">
+                                "Renting a car from nova ride was a great decision. The vehicle was reliable and the pricing was incredibly competitive."
                             </p>
 
                             {/* ხაზი */}
-                            <div className="w-full h-[1px] bg-gray-100 mb-8"></div>
+                            <div className="w-full h-[1px] bg-white/5 mb-8"></div>
 
-                            {/* მომხმარებლის ინფო */}
-                            <div className="flex items-center gap-5">
-                                <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-50">
+                            {/* მომხმარებელი */}
+                            <div className="flex items-center gap-4">
+                                <div className="w-12 h-12 rounded-2xl overflow-hidden border border-white/10 bg-[#050505]">
                                     <img 
                                         src={item.image} 
                                         alt={item.name} 
-                                        className="w-full h-full object-cover grayscale" 
+                                        className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" 
                                     />
                                 </div>
                                 <div>
-                                    <h4 className="text-gray-900 font-black text-lg uppercase tracking-tight">{item.name}</h4>
-                                    <p className="text-gray-400 text-sm font-medium">{item.role}</p>
+                                    <h4 className="text-white font-bold text-sm uppercase tracking-tight">{item.name}</h4>
+                                    <p className="text-white/30 text-[10px] uppercase font-bold tracking-widest">{item.role}</p>
                                 </div>
                             </div>
                         </div>
                     ))}
                 </div>
 
-                {/* ნავიგაციის ღილაკები */}
-                <div className="flex justify-center gap-4">
-                    <button className="w-14 h-14 rounded-full bg-[#ff4d1c] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-orange-900/20">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <button className="w-14 h-14 rounded-full bg-[#ff4d1c] text-white flex items-center justify-center hover:scale-110 transition-transform shadow-lg shadow-orange-900/20">
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
+                {/* ნავიგაცია */}
+                <div className="flex items-center gap-6">
+                    <div className="flex gap-3">
+                        <button className="w-12 h-12 rounded-full border border-white/10 text-white flex items-center justify-center hover:bg-white hover:text-black transition-all">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                            </svg>
+                        </button>
+                        <button className="w-12 h-12 rounded-full flex items-center justify-center text-black transition-all hover:scale-105 active:scale-95" style={{ backgroundColor: brandAccent }}>
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </button>
+                    </div>
+                    <div className="h-[1px] flex-grow bg-white/5"></div>
                 </div>
 
             </div>
@@ -109,4 +124,4 @@ const Comment = () => {
     );
 }
 
-export default Comment;
+export default Testimonials;
